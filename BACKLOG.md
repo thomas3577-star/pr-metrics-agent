@@ -64,6 +64,7 @@ We checked every past PR titled "Revert…" on three repos.
 - Feature lead time: needs a Jira link.
 - Deployment time: only for repos using GitHub Deployments.
 - Scheduled runs with GitHub Actions.
+- Proper charts in the HTML report (trend lines, distributions). Version 1 uses simple bars to stay a single offline file.
 - **Skill loading:** stop Copilot loading the skill during setup. Parked for now.
 - Repos merging over 1,000 PRs in the fetch range: pull.py stops today; would need date slicing.
 - PRs with over 100 commits or files: fetched partially and flagged; full pagination if this proves common.
