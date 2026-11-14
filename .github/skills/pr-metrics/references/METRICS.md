@@ -41,7 +41,7 @@ Choosing the window length:
 
 **3.3 Clock.** `calendar` (default) or `business`. Business hours use one team timezone, workdays, working hours and an optional holiday list. GitHub does not record each person's timezone, so business hours are unreliable for distributed teams.
 
-**3.4 Statistics.** Each metric reports the median, the 85th percentile (p85) and the count. Percentiles use linear interpolation. If a segment has fewer than `min_sample` PRs (default 30), report the median and the count only, flagged "too few PRs for p85". Durations are stored in hours and displayed in days to one decimal place.
+**3.4 Statistics.** Each metric reports the median, the 85th percentile (p85) and the count. Percentiles use linear interpolation. If a segment has fewer than `min_sample` PRs (default 30), report the median and the count only, flagged "too few PRs for p85". Durations are stored in hours. They are displayed in hours if under 2 days, otherwise in days, to one decimal place (e.g. "1.1 hours", "2.7 days"). `results.json` carries these ready-to-display values so the agent and the reports never convert numbers themselves.
 
 **3.5 Splits.** Every metric is also reported by **size label** (rule 3.6).
 
@@ -123,3 +123,4 @@ A primary metric is never shown without its counter-metric.
 | 2026-11-14 | 2 | Default window 14 → 28 days; plain-language guidance on choosing the window | 14 days left smaller repos under 30 PRs per window |
 | 2026-11-14 | 2 | CFR proxy: full PR links count as revert references; known limits note revert rarity | Revert check on three repos: links used on cli/cli; reverts under 1% |
 | 2026-11-14 | 2 | Removed the author-type split; splits are by size label only | In company repos almost every author is a company member, so the split adds nothing |
+| 2026-11-14 | 2 | Display rule: hours under 2 days, otherwise days; ready-to-display values in results.json | "0.0 days" was meaningless for fast repos; agent must not convert numbers itself |

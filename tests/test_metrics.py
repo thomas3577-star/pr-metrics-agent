@@ -173,7 +173,25 @@ def test_under_min_sample_hides_p85():
 
 def test_empty_window_handled():
     s = metrics.summarise([], 30)
-    assert s == {"count": 0, "median_hours": None, "p85_hours": None, "p85_suppressed": False}
+    assert s == {"count": 0, "median_hours": None, "p85_hours": None, "p85_suppressed": False,
+                 "median_display": None, "p85_display": None}
+
+
+@pytest.mark.parametrize("hours,text", [(1.14, "1.1 hours"), (47.94, "47.9 hours"),
+                                        (48, "2.0 days"), (63.83, "2.7 days"), (1199.13, "50.0 days")])
+def test_display_rule(hours, text):
+    assert metrics.display_duration(hours) == text
+
+
+def test_summary_display_values():
+    s = metrics.summarise([float(h) for h in range(1, 41)], 30)
+    assert s["median_display"] == "20.5 hours" and s["p85_display"] == "34.2 hours"  # 34.15 rounds up
+    assert metrics.summarise([1.0], 30)["p85_display"] == "hidden (fewer than 30 PRs)"
+
+
+def test_cfr_rate_display():
+    c = cfr_for(pr(200, "2026-10-07T00:00:00Z", title="Revert x", body="Reverts o/r#100"))
+    assert c["rate_display"] == "100.0% (1 of 1 PRs reverted)"
 
 
 def test_small_samples_reported_in_data_quality():
@@ -260,6 +278,21 @@ def test_bad_config_exits_2(tmp_path, bad):
     with pytest.raises(SystemExit) as e:
         metrics.load_config(path)
     assert e.value.code == 2
+
+
+def test_missing_timezone_data_gives_install_hint(tmp_path, monkeypatch, capsys):
+    path = tmp_path / "c.yaml"
+    path.write_text("clock: business\nbusiness_hours: {timezone: Asia/Kolkata, workdays: [Mon], "
+                    "start: '09:00', end: '18:00'}\n")
+    import zoneinfo
+    def no_data(key):
+        raise zoneinfo.ZoneInfoNotFoundError(key)
+    monkeypatch.setattr(zoneinfo, "ZoneInfo", no_data)
+    monkeypatch.setattr(metrics, "tzdata_installed", lambda: False)
+    with pytest.raises(SystemExit) as e:
+        metrics.load_config(path)
+    assert e.value.code == 2
+    assert "pip install -r requirements-dev.txt" in capsys.readouterr().err
 
 
 # ---------- Data quality ----------

@@ -1,6 +1,6 @@
 ---
 name: pr-metrics
-description: Measures a GitHub repo's PR review process (time to merge, change failure rate proxy) over a configurable window, using defined non-vanity metrics. Use when asked for PR metrics, time to merge, review flow or change failure rate for a repo. Do not use for installing, setting up, testing or changing this project.
+description: Measures a GitHub repo's PR review process (time to merge, change failure rate proxy) over a configurable window, using defined non-vanity metrics. Use when asked for PR metrics, time to merge, PR cycle time, review flow or change failure rate for a repo.
 ---
 
 # PR metrics skill
@@ -17,7 +17,7 @@ Fetches PR data for a configured repo, computes the metrics defined in `referenc
 
 ## Run steps
 
-Run from the workspace root. Stop at the first failing step and report the error.
+Run from the workspace root. If step 1 or 2 fails, stop and report the error. If step 3 fails, the numbers in `output/results.json` are still valid; report them and say the report files were not created.
 
 If a `.venv` folder exists, use its Python instead of `python` (Windows: `.venv\Scripts\python`; Mac or Linux: `.venv/bin/python`). Never activate the environment and never change system settings such as the PowerShell execution policy.
 
@@ -30,25 +30,26 @@ If a `.venv` folder exists, use its Python instead of `python` (Windows: `.venv\
 
 ## Outputs
 
-| File                  | Contents                                                                                  |
-| --------------------- | ----------------------------------------------------------------------------------------- |
-| `output/raw.json`     | Fetched PR data, run metadata and the reconciliation result                               |
+| File | Contents |
+|---|---|
+| `output/raw.json` | Fetched PR data, run metadata and the reconciliation result |
 | `output/results.json` | Every metric per window and split, the PR rows behind each number, and data-quality flags |
-| `output/report.html`  | Human-readable report, primary and counter-metrics side by side                           |
-| `output/report.xlsx`  | One sheet per metric plus PR-level rows                                                   |
+| `output/report.html` | Human-readable report, primary and counter-metrics side by side |
+| `output/report.xlsx` | One sheet per metric plus PR-level rows |
 
 ## Interpreting results
 
 - Numbers come only from `output/results.json`.
-- Check `data_quality` first: reconciliation status, segments flagged "too few PRs for p85", guard-adjusted PRs.
+- Check `data_quality` first: reconciliation status, segments flagged "too few PRs for p85", truncated PRs.
+- Quote durations using the `_display` fields (e.g. "2.7 days"). Never convert hours yourself.
 - If `reconciliation.status` is not `ok`, do not report any metric.
 - Report only metrics in METRICS.md's catalogue. Questions with status "Planned" are "not yet measured".
 
 ## Errors
 
-| Symptom                                | Likely cause                             | Action                                                          |
-| -------------------------------------- | ---------------------------------------- | --------------------------------------------------------------- |
+| Symptom | Likely cause | Action |
+|---|---|---|
 | 401 or 403, or "No GitHub token found" | Token missing, expired or without access | Ask the user to check the `.env` file themselves. Never open it |
-| Rate limit reached                     | Too many API calls                       | Wait for the reset time the script prints, then rerun           |
-| Reconciliation mismatch                | Incomplete fetch                         | Rerun step 1. If it persists, report the counts                 |
-| Config validation error                | Missing or invalid key                   | Show the key and the expected format                            |
+| Rate limit reached | Too many API calls | Wait for the reset time the script prints, then rerun |
+| Reconciliation mismatch | Incomplete fetch | Rerun step 1. If it persists, report the counts |
+| Config validation error | Missing or invalid key | Show the key and the expected format |

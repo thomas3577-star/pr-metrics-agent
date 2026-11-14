@@ -18,7 +18,7 @@ This project targets **Windows** (PowerShell in VS Code).
 | Metric definitions (METRICS.md v2) | Done |
 | Agent and skill files | Done |
 | `pull.py`: fetch PR data | Done, 23 automated tests |
-| `metrics.py`: compute metrics | Done, 46 automated tests |
+| `metrics.py`: compute metrics | Done, 54 automated tests |
 | `report.py`: HTML and Excel reports | Not started |
 
 **Measured in v1:** time to merge, change failure rate proxy.
@@ -117,11 +117,13 @@ python -m venv .venv
 
 ## Run the tests
 
+After pulling updates, run the install command from setup step 3 again first. New packages may have been added.
+
 ```
 .venv\Scripts\python -m pytest
 ```
 
-Expected: `69 passed`. The tests use saved GitHub responses, so they need no token or network.
+Expected: `77 passed`. The tests use saved GitHub responses, so they need no token or network.
 
 ---
 

@@ -16,6 +16,7 @@ import statistics
 import sys
 from collections import defaultdict
 from datetime import datetime, timedelta, time as dtime
+from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
 import pathspec
@@ -59,6 +60,11 @@ def iso(dt):
 
 # ---------- config ----------
 
+def tzdata_installed():
+    import importlib.util
+    return importlib.util.find_spec("tzdata") is not None
+
+
 def load_config(path):
     try:
         cfg = yaml.safe_load(Path(path).read_text()) or {}
@@ -78,6 +84,9 @@ def load_config(path):
             from zoneinfo import ZoneInfo
             ZoneInfo(bh["timezone"])
         except Exception:
+            if not tzdata_installed():
+                fail(2, "Timezone data is missing. Run: "
+                        ".venv\\Scripts\\python -m pip install -r requirements-dev.txt")
             fail(2, f"unknown timezone '{bh['timezone']}' in business_hours.timezone")
     for key in ("min_sample", "revert_window_days"):
         if not isinstance(merged[key], int) or merged[key] < 1:
@@ -148,16 +157,34 @@ def window_of(merged, windows):
 
 # ---------- statistics ----------
 
+def display_duration(hours):
+    """METRICS.md rule 3.4: hours under 2 days, otherwise days, one decimal place."""
+    if hours is None:
+        return None
+    if hours < 48:
+        return f"{one_decimal(hours)} hours"
+    return f"{one_decimal(hours / 24)} days"
+
+
+def one_decimal(x):
+    """Round half up to one decimal place, as a person would (34.15 -> 34.2)."""
+    return Decimal(repr(round(x, 6))).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+
+
 def summarise(values, min_sample):
     n = len(values)
-    out = {"count": n, "median_hours": None, "p85_hours": None, "p85_suppressed": False}
+    out = {"count": n, "median_hours": None, "p85_hours": None, "p85_suppressed": False,
+           "median_display": None, "p85_display": None}
     if n == 0:
         return out
     out["median_hours"] = round(statistics.median(values), 2)
+    out["median_display"] = display_duration(out["median_hours"])
     if n >= min_sample and n >= 2:
         out["p85_hours"] = round(statistics.quantiles(values, n=100, method="inclusive")[84], 2)
+        out["p85_display"] = display_duration(out["p85_hours"])
     else:
         out["p85_suppressed"] = True
+        out["p85_display"] = f"hidden (fewer than {min_sample} PRs)"
     return out
 
 
@@ -218,6 +245,8 @@ def cfr_proxy(all_prs, eligible, cfr_window, cfg):
         "eligible": n,
         "failed": len(failed),
         "rate_percent": round(100 * len(failed) / n, 1) if n else None,
+        "rate_display": f"{one_decimal(100 * len(failed) / n)}% ({len(failed)} of {n} PRs reverted)" if n
+                        else "no eligible PRs in the evaluation window",
         "failed_prs": failed,
         "fix_pr_candidates": candidates,
         "label": "proxy",
@@ -251,8 +280,10 @@ def compute(raw, cfg):
             "created_at": pr["created_at"], "merged_at": pr["merged_at"],
             "size_lines": lines, "size_label": size_label(lines),
             "time_to_merge_hours": round(clock(opened, merged), 2),
+            "time_to_merge_display": None,
             "is_revert": is_revert(pr), "window": None, "excluded": None,
         }
+        row["time_to_merge_display"] = display_duration(row["time_to_merge_hours"])
         if is_bot(pr, bots):
             row["excluded"] = "bot"
         else:
@@ -331,9 +362,8 @@ def main():
     cfr = results["metrics"]["cfr_proxy"]
     print(f"PRs counted: current {dq['prs_counted']['current']}, previous {dq['prs_counted']['previous']}. "
           f"Excluded: {dq['prs_excluded'] or 'none'}.")
-    print(f"Time to merge (current): median {ttm['median_hours']}h, "
-          f"p85 {ttm['p85_hours'] if ttm['p85_hours'] is not None else 'suppressed'}.")
-    print(f"CFR proxy: {cfr['failed']} of {cfr['eligible']} eligible PRs reverted.")
+    print(f"Time to merge (current): median {ttm['median_display']}, p85 {ttm['p85_display']}.")
+    print(f"CFR proxy: {cfr['rate_display']}.")
     print(f"Wrote {out}")
 
 
