@@ -1,0 +1,93 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4990,
+   "resetAt": "2026-11-14T06:00:00Z"
+  },
+  "search": {
+   "issueCount": 3,
+   "pageInfo": {
+    "hasNextPage": true,
+    "endCursor": "CUR1"
+   },
+   "nodes": [
+    {
+     "number": 1,
+     "title": "PR 1",
+     "body": "",
+     "url": "https://github.com/o/r/pull/1",
+     "createdAt": "2026-11-01T00:00:00Z",
+     "mergedAt": "2026-11-10T12:00:00Z",
+     "baseRefName": "main",
+     "authorAssociation": "MEMBER",
+     "author": {
+      "login": "dev1",
+      "__typename": "User"
+     },
+     "mergeCommit": {
+      "oid": "merge1"
+     },
+     "commits": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "commit": {
+         "oid": "c1",
+         "authoredDate": "2026-10-30T08:00:00Z"
+        }
+       }
+      ]
+     },
+     "files": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "path": "main.go",
+        "additions": 10,
+        "deletions": 2
+       }
+      ]
+     }
+    },
+    {
+     "number": 2,
+     "title": "PR 2",
+     "body": "",
+     "url": "https://github.com/o/r/pull/2",
+     "createdAt": "2026-11-01T00:00:00Z",
+     "mergedAt": "2026-11-11T12:00:00Z",
+     "baseRefName": "main",
+     "authorAssociation": "MEMBER",
+     "author": {
+      "login": "dev2",
+      "__typename": "User"
+     },
+     "mergeCommit": {
+      "oid": "merge2"
+     },
+     "commits": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "commit": {
+         "oid": "c2",
+         "authoredDate": "2026-10-30T08:00:00Z"
+        }
+       }
+      ]
+     },
+     "files": {
+      "totalCount": 150,
+      "nodes": [
+       {
+        "path": "main.go",
+        "additions": 10,
+        "deletions": 2
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

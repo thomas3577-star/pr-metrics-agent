@@ -1,0 +1,2 @@
+-r .github/skills/pr-metrics/scripts/requirements.txt
+pytest>=8.0

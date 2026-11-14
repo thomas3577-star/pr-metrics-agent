@@ -1,0 +1,53 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4989,
+   "resetAt": "2026-11-14T06:00:00Z"
+  },
+  "search": {
+   "issueCount": 3,
+   "pageInfo": {
+    "hasNextPage": false,
+    "endCursor": null
+   },
+   "nodes": [
+    {
+     "number": 3,
+     "title": "PR 3",
+     "body": "",
+     "url": "https://github.com/o/r/pull/3",
+     "createdAt": "2026-11-01T00:00:00Z",
+     "mergedAt": "2026-11-12T12:00:00Z",
+     "baseRefName": "main",
+     "authorAssociation": "MEMBER",
+     "author": null,
+     "mergeCommit": {
+      "oid": "merge3"
+     },
+     "commits": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "commit": {
+         "oid": "c3",
+         "authoredDate": "2026-10-30T08:00:00Z"
+        }
+       }
+      ]
+     },
+     "files": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "path": "main.go",
+        "additions": 10,
+        "deletions": 2
+       }
+      ]
+     }
+    },
+    {}
+   ]
+  }
+ }
+}

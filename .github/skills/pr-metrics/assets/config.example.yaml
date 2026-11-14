@@ -1,0 +1,37 @@
+# pr-metrics configuration template.
+# Copy to pr-metrics.config.yaml at the workspace root and edit.
+# Every key and default is defined in references/METRICS.md, section 6.
+
+repo: owner/name                # required
+branches: []                    # empty = repo's default branch
+window_days: 14                 # current + previous window each run
+clock: calendar                 # "calendar" or "business"
+
+business_hours:                 # used only when clock is "business"
+  timezone: UTC                 # IANA name, e.g. Asia/Kolkata
+  workdays: [Mon, Tue, Wed, Thu, Fri]
+  start: "09:00"
+  end: "18:00"
+  holidays: []                  # ISO dates, e.g. ["2026-12-25"]
+
+bots: []                        # extra bot logins; type "Bot" always excluded
+
+noise_patterns:                 # excluded from PR size; replaces defaults
+  - "**/package-lock.json"
+  - "**/yarn.lock"
+  - "**/pnpm-lock.yaml"
+  - "**/go.sum"
+  - "**/Cargo.lock"
+  - "**/poetry.lock"
+  - "**/*.pb.go"
+  - "**/*_generated.*"
+  - "**/generated/**"
+  - "vendor/**"
+  - "third_party/**"
+  - "**/__snapshots__/**"
+  - "**/*.min.js"
+
+min_sample: 30                  # PRs needed before p85 is shown
+guard_days: 30                  # cycle time first-commit guard
+revert_window_days: 14          # revert counts as failure within this
+fix_keywords: [fix, regression, hotfix]   # fix-PR candidates, not counted
