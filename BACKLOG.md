@@ -15,6 +15,26 @@ Work not yet decided. **Not read by the agent or the scripts.** Items move into 
 
 Each needs a pairing in METRICS.md section 5.
 
+## Dropped metrics
+
+### Cycle time
+
+We dropped it in version 2.
+
+**Why:** we checked three repos. On all three, people open the PR about 6 minutes after their first commit, so cycle time gave almost the same number as time to merge. And in 5 to 10% of PRs, people had rewritten their commits, which made the commit dates wrong.
+
+| Repo | Time from first commit to PR | PRs with rewritten commits |
+|---|---|---|
+| prometheus/prometheus | 6 min | 10% |
+| cli/cli | 6 min | 5% |
+| grafana/k6 | 6 min | 6% |
+
+**How to bring it back later:**
+- **Best way:** use the ticket's start date from Jira (when it moves to "In Progress") instead of the commit date. Needs each PR linked to a ticket.
+- **Fallback:** use commit dates, but skip PRs with rewritten commits.
+
+**Not yet known:** company teams might open PRs later than public projects do.
+
 ## Before the first data pull
 
 - Write one hypothesis per measured question, dated. Must be done before seeing any data.
@@ -27,15 +47,13 @@ Each needs a pairing in METRICS.md section 5.
 - Feature lead time: needs a Jira link.
 - Deployment time: only for repos using GitHub Deployments.
 - Scheduled runs with GitHub Actions.
+- **Window length:** 14 days is too short for smaller repos, which have too few PRs per window. Change the default to 28 days?
+- **Skill loading:** stop Copilot loading the skill during setup. Parked for now.
 - Repos merging over 1,000 PRs in the fetch range: pull.py stops today; would need date slicing.
 - PRs with over 100 commits or files: fetched partially and flagged; full pagination if this proves common.
 
 ## To verify on the first data pull
 
-- Default body text of GitHub's Revert button ("Reverts owner/repo#N").
-- Reference repo's branch mix (default branch vs release branches).
-- Reference repo's label names.
-- Reference repo's generated files not matched by default noise patterns (e.g. the generated query-language parser).
-- Whether GitHub's API size counts honour `linguist-generated`.
-- Whether skills load in your VS Code version.
-- Whether the GraphQL API can filter PRs by merged or updated time, or whether the search API with date slices is needed.
+- **Revert button text:** still unknown. There were no reverts in the first pull.
+- **Branch mix:** still unknown. Only `main` was fetched.
+- **Generated files:** found one not covered by the default patterns, `promql/parser/generated_parser.y.go`. Still to decide: the API "golden" test files (`openapi_3.x_golden.yaml`).

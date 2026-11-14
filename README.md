@@ -15,13 +15,13 @@ This project targets **Windows** (PowerShell in VS Code).
 
 | Part | State |
 |---|---|
-| Metric definitions (METRICS.md v1) | Done |
+| Metric definitions (METRICS.md v2) | Done |
 | Agent and skill files | Done |
 | `pull.py`: fetch PR data | Done, 23 automated tests |
 | `metrics.py`: compute metrics | Not started |
 | `report.py`: HTML and Excel reports | Not started |
 
-**Measured in v1:** cycle time, time to merge, change failure rate proxy.
+**Measured in v1:** time to merge, change failure rate proxy.
 **Planned:** time per stage, skipped or rushed reviews, PR size, stale work (see BACKLOG.md).
 
 ---
@@ -179,3 +179,4 @@ The agent confirms the config with you, runs the skill, checks data quality and 
 - The change failure rate is a proxy: it counts reverted PRs only and always undercounts.
 - Business hours assume a single team timezone.
 - The fetch stops if more than 1,000 PRs match; use a shorter window.
+- Cycle time is not measured. Commit dates turned out to be unreliable. Details in BACKLOG.md.

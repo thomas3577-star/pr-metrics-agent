@@ -32,6 +32,6 @@ noise_patterns:                 # excluded from PR size; replaces defaults
   - "**/*.min.js"
 
 min_sample: 30                  # PRs needed before p85 is shown
-guard_days: 30                  # cycle time first-commit guard
+guard_days: 30                  # Cycle time guard: if the first commit is older than this many days before the PR was opened, the PR-opened time is used instead.
 revert_window_days: 14          # revert counts as failure within this
 fix_keywords: [fix, regression, hotfix]   # fix-PR candidates, not counted

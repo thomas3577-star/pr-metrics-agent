@@ -1,6 +1,6 @@
 # PR metrics: definitions
 
-Version 1 · 2026-11-14
+Version 2 · 2026-11-14
 
 **Purpose:** single source of truth for every PR metric. The agent and the scripts follow this file. To change what a number means, change it here first and log it in the change log.
 
@@ -20,7 +20,7 @@ Analyse the PR review process to identify bottlenecks and risks, with respect to
 
 | Goal area | Question | Status | Metrics |
 |---|---|---|---|
-| Flow speed | How long does a PR take to merge? | Measured | Cycle time, Time to merge |
+| Flow speed | How long does a PR take to merge? | Measured | Time to merge |
 | Flow speed | Where do PRs spend the most time? | Planned | None yet |
 | Review effectiveness | Are reviews skipped or rushed? | Planned | None yet |
 | Review effectiveness | Are merged changes stable? | Measured | Change failure rate proxy |
@@ -61,32 +61,22 @@ A PR belongs to a window by the time it was merged.
 
 ## 4. Metric catalogue
 
-### 4.1 Cycle time
+### 4.1 Time to merge
 
 | Item | Definition |
 |---|---|
 | Answers | How long does a PR take to merge? |
-| Measures | First commit → merged |
-| Start | Author date of the PR's earliest commit. **Guard:** if that date is more than `guard_days` (default 30) before the PR was opened, use the PR-opened time instead and flag the PR |
-| End | Merged time |
-| Included | PRs merged in the window, per rule 3.1 |
-| Statistics | Rule 3.4, current and previous window |
-| Data-quality output | Count of guard-adjusted PRs |
-| Known limits | Commit dates come from authors' machines. Excludes deployment time |
-
-### 4.2 Time to merge
-
-| Item | Definition |
-|---|---|
-| Answers | How long does a PR take to merge? |
-| Measures | PR opened → merged |
+| Measures | PR opened → merged. Some tools call this "PR cycle time" |
 | Start | PR-opened time |
 | End | Merged time |
 | Included | PRs merged in the window, per rule 3.1 |
 | Statistics | Rule 3.4, current and previous window |
-| Known limits | Ignores work done before the PR was opened. Comparable with GitHub's native "time to merge" |
+| Gaming risk | Opening PRs late, after coding is finished. Accepted: undetectable with git data alone (see "Why not cycle time") |
+| Known limits | Excludes work done before the PR was opened, and deployment time. Comparable with GitHub's native "time to merge" |
 
-### 4.3 Change failure rate proxy (CFR proxy)
+**Why not cycle time.** Cycle time from the first commit was tested on three public repos (prometheus/prometheus, cli/cli, grafana/k6) and dropped. The typical gap between first commit and PR opened was 6 minutes, so it added little. And 5 to 10% of PRs had commit history rewritten by squash or force-push, which made the first commit unreliable. The start of work belongs in the issue tracker; see BACKLOG.md.
+
+### 4.2 Change failure rate proxy (CFR proxy)
 
 | Item | Definition |
 |---|---|
@@ -106,9 +96,8 @@ A primary metric is never shown without its counter-metric.
 
 | Primary metric | Counter-metric | Gaming it catches |
 |---|---|---|
-| Cycle time | CFR proxy | Going faster by cutting quality |
-| Time to merge | Cycle time | Opening PRs late to look fast |
-| CFR proxy | Cycle time | Going slower to avoid failures |
+| Time to merge | CFR proxy | Going faster by cutting quality |
+| CFR proxy | Time to merge | Going slower to avoid failures |
 
 ## 6. Config reference
 
@@ -122,7 +111,6 @@ A primary metric is never shown without its counter-metric.
 | `bots` | empty | Extra bot logins to exclude |
 | `noise_patterns` | rule 3.7 list | File patterns excluded from size |
 | `min_sample` | 30 | Minimum PRs for p85 |
-| `guard_days` | 30 | Cycle time guard |
 | `revert_window_days` | 14 | Revert allowance |
 | `fix_keywords` | fix, regression, hotfix | Fix-PR candidate words |
 
@@ -131,3 +119,4 @@ A primary metric is never shown without its counter-metric.
 | Date | Version | Change | Why |
 |---|---|---|---|
 | 2026-11-14 | 1 | Goal, questions, common rules, cycle time, time to merge, CFR proxy, pairings | First version |
+| 2026-11-14 | 2 | Removed cycle time; time to merge is the primary speed metric; pairings updated; `guard_days` removed | Real data from three repos: first-commit dates are unreliable and add little |

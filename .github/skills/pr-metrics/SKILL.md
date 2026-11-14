@@ -1,6 +1,6 @@
 ---
 name: pr-metrics
-description: Measures a GitHub repo's PR review process (cycle time, time to merge, change failure rate proxy) over a configurable window, using defined non-vanity metrics. Use when asked for PR metrics, PR cycle time, time to merge, review flow or change failure rate for a repo.
+description: Measures a GitHub repo's PR review process (time to merge, change failure rate proxy) over a configurable window, using defined non-vanity metrics. Use when asked for PR metrics, time to merge, review flow or change failure rate for a repo. Do not use for installing, setting up, testing or changing this project.
 ---
 
 # PR metrics skill
@@ -30,12 +30,12 @@ If a `.venv` folder exists, use its Python instead of `python` (Windows: `.venv\
 
 ## Outputs
 
-| File | Contents |
-|---|---|
-| `output/raw.json` | Fetched PR data, run metadata and the reconciliation result |
+| File                  | Contents                                                                                  |
+| --------------------- | ----------------------------------------------------------------------------------------- |
+| `output/raw.json`     | Fetched PR data, run metadata and the reconciliation result                               |
 | `output/results.json` | Every metric per window and split, the PR rows behind each number, and data-quality flags |
-| `output/report.html` | Human-readable report, primary and counter-metrics side by side |
-| `output/report.xlsx` | One sheet per metric plus PR-level rows |
+| `output/report.html`  | Human-readable report, primary and counter-metrics side by side                           |
+| `output/report.xlsx`  | One sheet per metric plus PR-level rows                                                   |
 
 ## Interpreting results
 
@@ -46,9 +46,9 @@ If a `.venv` folder exists, use its Python instead of `python` (Windows: `.venv\
 
 ## Errors
 
-| Symptom | Likely cause | Action |
-|---|---|---|
+| Symptom                                | Likely cause                             | Action                                                          |
+| -------------------------------------- | ---------------------------------------- | --------------------------------------------------------------- |
 | 401 or 403, or "No GitHub token found" | Token missing, expired or without access | Ask the user to check the `.env` file themselves. Never open it |
-| Rate limit reached | Too many API calls | Wait for the reset time the script prints, then rerun |
-| Reconciliation mismatch | Incomplete fetch | Rerun step 1. If it persists, report the counts |
-| Config validation error | Missing or invalid key | Show the key and the expected format |
+| Rate limit reached                     | Too many API calls                       | Wait for the reset time the script prints, then rerun           |
+| Reconciliation mismatch                | Incomplete fetch                         | Rerun step 1. If it persists, report the counts                 |
+| Config validation error                | Missing or invalid key                   | Show the key and the expected format                            |

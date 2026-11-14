@@ -1,6 +1,6 @@
 ---
 name: pr-metrics
-description: Runs the pr-metrics skill to measure a repo's PR review process and explains the results. Use for PR cycle time, time to merge and change failure rate questions.
+description: Runs the pr-metrics skill to measure a repo's PR review process and explains the results. Use for time to merge, PR cycle time and change failure rate questions.
 tools: ['read', 'edit', 'search', 'execute', 'todo', 'github/*']
 ---
 

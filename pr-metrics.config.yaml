@@ -1,7 +1,8 @@
 # pr-metrics configuration for the reference repo.
 # Keys left out use the defaults in METRICS.md, section 6.
 
-repo: prometheus/prometheus
+repo: grafana/k6
 branches: []          # default branch only; release/backport branches excluded
 window_days: 14
 clock: calendar       # contributors span many timezones
+guard_days: 30
