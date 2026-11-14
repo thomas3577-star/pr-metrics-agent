@@ -31,11 +31,13 @@ Analyse the PR review process to identify bottlenecks and risks, with respect to
 
 **3.1 Population.** PRs in the configured repo, targeting the configured branches (default: the repo's default branch). Bot authors are excluded: GitHub account type "Bot", plus any login in the configured bot list.
 
-**3.2 Windows.** Window length is `window_days` (default 14). Each run computes:
-- Current window: the `window_days` days ending at the run time.
-- Previous window: the `window_days` days immediately before the current window.
+**3.2 Windows.** The window is how many past days of merged PRs a report covers (`window_days`, default 28). Each run reports two windows: the current one (the last `window_days` days) and the previous one (the `window_days` days before that), so you can see whether things changed. A PR belongs to the window in which it was merged.
 
-A PR belongs to a window by the time it was merged.
+Choosing the window length:
+- **Shorter** (e.g. 14 days): more up to date and shows change sooner, but fewer PRs, so numbers jump around and p85 is often hidden (rule 3.4).
+- **Longer** (e.g. 28 days): more PRs and steadier numbers, but slower to show change and mixes in older behaviour.
+- **Rule of thumb:** use the shortest window that gives at least 30 non-bot PRs. A team merging 30 or more PRs per 2-week sprint can use 14 days.
+- **Maximum:** the fetch stops above 1,000 PRs across both windows, so about 500 PRs per window.
 
 **3.3 Clock.** `calendar` (default) or `business`. Business hours use one team timezone, workdays, working hours and an optional holiday list. GitHub does not record each person's timezone, so business hours are unreliable for distributed teams.
 
@@ -83,7 +85,7 @@ A PR belongs to a window by the time it was merged.
 | Answers | Are merged changes stable? |
 | Measures | Share of merged PRs later reverted |
 | Formula | Failed PRs ÷ eligible PRs, as a percentage, with both counts |
-| Evaluation window | A window of `window_days` ending `revert_window_days` before the run time, so every eligible PR has had the full revert allowance. With the defaults (14 and 14) this equals the previous window. The report shows its dates |
+| Evaluation window | A window of `window_days` ending `revert_window_days` before the run time, so every eligible PR has had the full revert allowance. With a 14-day window and the default 14-day revert allowance, this equals the previous window. The report shows its dates |
 | Eligible PRs | Merged in the evaluation window, per rule 3.1, excluding revert PRs |
 | Revert PR | A merged PR whose title starts with "Revert" (case-insensitive) |
 | Failed PR | An eligible PR referenced by a revert PR merged within `revert_window_days` (default 14) of it. A reference is either "#N" for the PR's number (as written by GitHub's Revert button) or "This reverts commit <ID>" where the ID is one of the PR's commits or its merge commit (as written by `git revert`). A PR counts once, however many reverts it has |
@@ -105,7 +107,7 @@ A primary metric is never shown without its counter-metric.
 |---|---|---|
 | `repo` | none (required) | owner/name |
 | `branches` | repo default branch | Target branches included |
-| `window_days` | 14 | Window length |
+| `window_days` | 28 | Window length (rule 3.2) |
 | `clock` | calendar | `calendar` or `business` |
 | `business_hours` | none | timezone, workdays, start, end, holidays |
 | `bots` | empty | Extra bot logins to exclude |
@@ -120,3 +122,4 @@ A primary metric is never shown without its counter-metric.
 |---|---|---|---|
 | 2026-11-14 | 1 | Goal, questions, common rules, cycle time, time to merge, CFR proxy, pairings | First version |
 | 2026-11-14 | 2 | Removed cycle time; time to merge is the primary speed metric; pairings updated; `guard_days` removed | Real data from three repos: first-commit dates are unreliable and add little |
+| 2026-11-14 | 2 | Default window 14 → 28 days; plain-language guidance on choosing the window | 14 days left smaller repos under 30 PRs per window |

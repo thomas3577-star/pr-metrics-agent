@@ -26,7 +26,7 @@ SEARCH_CAP = 1000
 PAGE_SIZE = 25
 
 # Defaults mirror METRICS.md section 6. Only keys pull.py needs.
-DEFAULTS = {"branches": [], "window_days": 14, "revert_window_days": 14}
+DEFAULTS = {"branches": [], "window_days": 28, "revert_window_days": 14}
 
 REPO_QUERY = """
 query($owner: String!, $name: String!) {

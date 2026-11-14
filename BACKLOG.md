@@ -2,6 +2,11 @@
 
 Work not yet decided. **Not read by the agent or the scripts.** Items move into METRICS.md only once fully defined.
 
+## Decided, not yet done
+
+- **Agent recommends noise patterns.** The compute script lists the files with the most lines changed. The agent proposes noise patterns with a reason for each. The user approves, then the agent updates the config. Found by the first data pull: the default patterns missed a generated parser file.
+- **Remove the author-type split** (METRICS.md rule 3.5). In company repos almost every author is a company member, so it adds nothing.
+
 ## Metrics to define
 
 | Question | Proposed metric | Open points |
@@ -43,11 +48,11 @@ We dropped it in version 2.
 
 - Storage: persist data between runs, or pull fresh each run (version 1 pulls fresh).
 - Business hours for distributed teams.
+- Split results by team (from CODEOWNERS or GitHub teams), for company repos.
 - Governance metric (merges that bypass rules): skipped for now; likely needs admin access.
 - Feature lead time: needs a Jira link.
 - Deployment time: only for repos using GitHub Deployments.
 - Scheduled runs with GitHub Actions.
-- **Window length:** 14 days is too short for smaller repos, which have too few PRs per window. Change the default to 28 days?
 - **Skill loading:** stop Copilot loading the skill during setup. Parked for now.
 - Repos merging over 1,000 PRs in the fetch range: pull.py stops today; would need date slicing.
 - PRs with over 100 commits or files: fetched partially and flagged; full pagination if this proves common.

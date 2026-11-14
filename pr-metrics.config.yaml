@@ -3,6 +3,5 @@
 
 repo: grafana/k6
 branches: []          # default branch only; release/backport branches excluded
-window_days: 14
+window_days: 30
 clock: calendar       # contributors span many timezones
-guard_days: 30

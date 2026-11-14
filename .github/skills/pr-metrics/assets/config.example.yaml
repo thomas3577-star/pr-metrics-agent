@@ -2,21 +2,32 @@
 # Copy to pr-metrics.config.yaml at the workspace root and edit.
 # Every key and default is defined in references/METRICS.md, section 6.
 
-repo: owner/name                # required
-branches: []                    # empty = repo's default branch
-window_days: 14                 # current + previous window each run
-clock: calendar                 # "calendar" or "business"
+# Required. The repo to measure, as owner/name.
+repo: owner/name
 
-business_hours:                 # used only when clock is "business"
-  timezone: UTC                 # IANA name, e.g. Asia/Kolkata
+# Target branches to include. Empty list = the repo's default branch.
+branches: []
+
+# Window length in days (default 28). Each run covers the current window and the previous one.
+# Use the shortest window that gives at least 30 non-bot PRs. See METRICS.md rule 3.2.
+window_days: 28
+
+# Clock for durations: "calendar" or "business".
+clock: calendar
+
+# Used only when clock is "business". Assumes one team timezone.
+business_hours:
+  timezone: UTC         # IANA name, e.g. Asia/Kolkata
   workdays: [Mon, Tue, Wed, Thu, Fri]
   start: "09:00"
   end: "18:00"
-  holidays: []                  # ISO dates, e.g. ["2026-12-25"]
+  holidays: []          # ISO dates, e.g. ["2026-12-25"]
 
-bots: []                        # extra bot logins; type "Bot" always excluded
+# Extra bot logins to exclude. Accounts of type "Bot" are always excluded.
+bots: []
 
-noise_patterns:                 # excluded from PR size; replaces defaults
+# File patterns excluded from PR size. Replace the list to override the defaults.
+noise_patterns:
   - "**/package-lock.json"
   - "**/yarn.lock"
   - "**/pnpm-lock.yaml"
@@ -31,7 +42,11 @@ noise_patterns:                 # excluded from PR size; replaces defaults
   - "**/__snapshots__/**"
   - "**/*.min.js"
 
-min_sample: 30                  # PRs needed before p85 is shown
-guard_days: 30                  # Cycle time guard: if the first commit is older than this many days before the PR was opened, the PR-opened time is used instead.
-revert_window_days: 14          # revert counts as failure within this
-fix_keywords: [fix, regression, hotfix]   # fix-PR candidates, not counted
+# Minimum PRs in a segment before p85 is reported.
+min_sample: 30
+
+# Days after merge within which a revert counts as a failure.
+revert_window_days: 28
+
+# Title words that mark a fix-PR candidate (listed, not counted).
+fix_keywords: [fix, regression, hotfix]

@@ -155,7 +155,7 @@ Edit `pr-metrics.config.yaml`. Keys left out use the defaults in METRICS.md sect
 ```yaml
 repo: owner/name
 branches: []          # empty = the repo's default branch
-window_days: 14
+window_days: 28       # see METRICS.md rule 3.2
 clock: calendar       # or "business"
 ```
 
