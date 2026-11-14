@@ -88,9 +88,9 @@ Choosing the window length:
 | Evaluation window | A window of `window_days` ending `revert_window_days` before the run time, so every eligible PR has had the full revert allowance. With a 14-day window and the default 14-day revert allowance, this equals the previous window. The report shows its dates |
 | Eligible PRs | Merged in the evaluation window, per rule 3.1, excluding revert PRs |
 | Revert PR | A merged PR whose title starts with "Revert" (case-insensitive) |
-| Failed PR | An eligible PR referenced by a revert PR merged within `revert_window_days` (default 14) of it. A reference is either "#N" for the PR's number (as written by GitHub's Revert button) or "This reverts commit <ID>" where the ID is one of the PR's commits or its merge commit (as written by `git revert`). A PR counts once, however many reverts it has |
+| Failed PR | An eligible PR referenced by a revert PR merged within `revert_window_days` (default 14) of it. A reference is any of: "#N" for the PR's number (as written by GitHub's Revert button, "Reverts owner/repo#N", or by hand); a full link to the PR (".../pull/N"); or "This reverts commit <ID>" where the ID is one of the PR's commits or its merge commit (as written by `git revert`). A PR counts once, however many reverts it has |
 | Fix-PR candidates | Merged PRs within `revert_window_days` that reference an eligible PR and contain a `fix_keywords` word in the title (default: fix, regression, hotfix). Listed for review only. **Not counted in the proxy** |
-| Known limits | Misses fixes made forward without a revert and failures fixed outside GitHub, so it always undercounts. Always label it "proxy" |
+| Known limits | Misses fixes made forward without a revert and failures fixed outside GitHub, so it always undercounts. Always label it "proxy". Reverts are rare in public repos (under 1% of merged PRs on the three repos tested), so expect 0% in most windows |
 
 ## 5. Pairings
 
@@ -123,3 +123,4 @@ A primary metric is never shown without its counter-metric.
 | 2026-11-14 | 1 | Goal, questions, common rules, cycle time, time to merge, CFR proxy, pairings | First version |
 | 2026-11-14 | 2 | Removed cycle time; time to merge is the primary speed metric; pairings updated; `guard_days` removed | Real data from three repos: first-commit dates are unreliable and add little |
 | 2026-11-14 | 2 | Default window 14 → 28 days; plain-language guidance on choosing the window | 14 days left smaller repos under 30 PRs per window |
+| 2026-11-14 | 2 | CFR proxy: full PR links count as revert references; known limits note revert rarity | Revert check on three repos: links used on cli/cli; reverts under 1% |

@@ -40,6 +40,18 @@ We dropped it in version 2.
 
 **Not yet known:** company teams might open PRs later than public projects do.
 
+## Revert check (three repos)
+
+We checked every past PR titled "Revert…" on three repos.
+
+| | Prometheus | cli/cli | grafana/k6 |
+|---|---|---|---|
+| Reverts found (all history) | 39 | 15 | 17 |
+| Caught by our rules | 87% | 100% | 88% |
+| Reverts per merged PR in 2026 | about 0.15% | about 0.6% | about 0.2% |
+
+**What it means:** our rules catch about 9 in 10 reverts. Reverts are rare in public repos, so the change failure rate will usually show 0%. Company repos may revert more often; not yet tested.
+
 ## Before the first data pull
 
 - Write one hypothesis per measured question, dated. Must be done before seeing any data.
@@ -59,6 +71,5 @@ We dropped it in version 2.
 
 ## To verify on the first data pull
 
-- **Revert button text:** still unknown. There were no reverts in the first pull.
 - **Branch mix:** still unknown. Only `main` was fetched.
 - **Generated files:** found one not covered by the default patterns, `promql/parser/generated_parser.y.go`. Still to decide: the API "golden" test files (`openapi_3.x_golden.yaml`).

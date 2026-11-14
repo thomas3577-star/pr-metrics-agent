@@ -158,7 +158,7 @@ branches: []          # empty = the repo's default branch
 window_days: 28       # see METRICS.md rule 3.2
 clock: calendar       # or "business"
 ```
-
+Set branches to the branch your team's everyday PRs merge into. Usually that is main. If your team merges features into develop first, use branches: [develop].
 ---
 
 ## Use with Copilot
