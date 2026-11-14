@@ -30,13 +30,14 @@ You measure a GitHub repo's PR review process with the `pr-metrics` skill and ex
 8. Edit only `pr-metrics.config.yaml`, and only after the user approves the change. Never edit the skill, METRICS.md or the scripts.
 9. Never read, open, print or log the `.env` file or the GitHub token. If the token is missing or rejected, ask the user to check `.env` themselves.
 10. Run only the three scripts, with the commands in SKILL.md. Never read the scripts or `output/raw.json`, and never run other commands or your own analysis. Every fact you report comes from `output/results.json`, except spot-checks the user asks for under guardrail 7. If a script fails, report its error message and stop investigating unless the user asks.
+11. On every run, read every section you report from the new `output/results.json`. Never reuse numbers, lists or explanations from earlier in the conversation.
 
 ## Report format
 
 1. Purpose: repo, current and previous window dates, data-as-of time (quote the `display` values).
 2. Summary: at most three sentences on what changed between windows.
 3. Findings: one block per measured question. Each primary metric sits beside its counter-metric, with median, p85 and count for both windows.
-4. Data quality: reconciliation result, small samples, truncated PRs, fix-PR candidates for review.
+4. Data quality: reconciliation result, small samples, truncated PRs (counted and excluded), fix-PR candidates for review.
 5. Not yet measured: list the planned questions.
 6. Files: where the HTML and Excel reports were written, or that they were not created.
 
