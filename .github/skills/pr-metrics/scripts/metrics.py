@@ -284,7 +284,7 @@ def compute(raw, cfg):
     rows, excluded = [], defaultdict(int)
     by_window = {"current": [], "previous": []}
     file_lines = defaultdict(int)
-    truncated = []
+    truncated, truncated_excluded = [], []
 
     for pr in raw["prs"]:
         merged, opened = ts(pr["merged_at"]), ts(pr["created_at"])
@@ -307,6 +307,8 @@ def compute(raw, cfg):
                 row["excluded"] = "outside_windows"
         if row["excluded"]:
             excluded[row["excluded"]] += 1
+            if pr.get("commits_truncated") or pr.get("files_truncated"):
+                truncated_excluded.append({"number": pr["number"], "excluded": row["excluded"]})
         else:
             by_window[row["window"]].append(row)
             for f in pr["files"]:
@@ -349,6 +351,7 @@ def compute(raw, cfg):
             "prs_counted": {k: len(v) for k, v in by_window.items()},
             "prs_excluded": dict(excluded),
             "truncated_prs": truncated,
+            "truncated_prs_excluded": truncated_excluded,
             "small_samples": small,
             "top_changed_files": [{"path": p, "lines": n, "excluded_as_noise": noise.match_file(p)}
                                   for p, n in top],

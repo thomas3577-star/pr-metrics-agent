@@ -314,6 +314,16 @@ def test_top_changed_files_flag_noise():
     assert top[1]["excluded_as_noise"] is False
 
 
+def test_truncated_prs_split_counted_and_excluded():
+    bot = pr(1, "2026-10-20T00:00:00Z", author="renovate", author_type="Bot")
+    bot["files_truncated"] = True
+    human = pr(2, "2026-10-21T00:00:00Z")
+    human["commits_truncated"] = True
+    dq = run([bot, human])["data_quality"]
+    assert dq["truncated_prs"] == [2]
+    assert dq["truncated_prs_excluded"] == [{"number": 1, "excluded": "bot"}]
+
+
 # ---------- Whole run on real data from three repos ----------
 
 @pytest.mark.parametrize("repo", ["prometheus", "cli", "k6"])

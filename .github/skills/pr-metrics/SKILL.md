@@ -17,7 +17,7 @@ Fetches PR data for a configured repo, computes the metrics defined in `referenc
 
 ## Run steps
 
-Run from the workspace root, exactly as written. Use the project's own Python in `.venv`: on Windows `.venv\Scripts\python`, on Mac or Linux `.venv/bin/python`. Do not search for `.venv` first; file search skips it. If the command fails because `.venv` is missing, stop and tell the user to follow the README setup.
+Run from the workspace root, exactly as written. Run each command on its own and check it succeeded before running the next; never join commands together. Use the project's own Python in `.venv`: on Windows `.venv\Scripts\python`, on Mac or Linux `.venv/bin/python`. Do not search for `.venv` first; file search skips it. If the command fails because `.venv` is missing, stop and tell the user to follow the README setup.
 
 If step 1 or 2 fails, stop and report the error. If step 3 fails, the numbers in `output/results.json` are still valid; report them and say the report files were not created.
 
@@ -42,7 +42,7 @@ On Mac or Linux, replace `.venv\Scripts\python` with `.venv/bin/python`.
 ## Interpreting results
 
 - Numbers come only from `output/results.json`.
-- Check `data_quality` first: reconciliation status, segments flagged "too few PRs for p85", truncated PRs.
+- Check `data_quality` first: reconciliation status, segments flagged "too few PRs for p85", truncated PRs. `truncated_prs` lists counted PRs only; `truncated_prs_excluded` lists truncated PRs that were excluded (e.g. bots). `pull.py`'s printed count covers both.
 - Quote durations and dates using the ready-to-display fields (`_display`, `display`), e.g. "2.7 days", "15 Oct 2026 to 14 Nov 2026 (UTC)". Never convert hours or dates yourself.
 - If `reconciliation.status` is not `ok`, do not report any metric.
 - Report only metrics in METRICS.md's catalogue. Questions with status "Planned" are "not yet measured".
