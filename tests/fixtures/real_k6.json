@@ -1,0 +1,861 @@
+{
+ "meta": {
+  "tool_version": "1.0",
+  "repo": "grafana/k6",
+  "default_branch": "master",
+  "branches": [
+   "master"
+  ],
+  "run_at": "2026-11-14T07:53:00Z",
+  "windows": {
+   "current": {
+    "start": "2026-10-31T07:53:00Z",
+    "end": "2026-11-14T07:53:00Z"
+   },
+   "previous": {
+    "start": "2026-10-17T07:53:00Z",
+    "end": "2026-10-31T07:53:00Z"
+   },
+   "cfr_eval": {
+    "start": "2026-10-17T07:53:00Z",
+    "end": "2026-10-31T07:53:00Z"
+   }
+  },
+  "fetch_range": {
+   "start": "2026-10-17T07:53:00Z",
+   "end": "2026-11-14T07:53:00Z"
+  },
+  "config": {
+   "window_days": 14,
+   "revert_window_days": 14
+  }
+ },
+ "reconciliation": {
+  "status": "ok",
+  "slices": []
+ },
+ "prs": [
+  {
+   "number": 6573,
+   "title": "Unflake cloud tar archive tests",
+   "body": "## What?\n\n`assertArchiveEqual()` asserts that a received tar archives equals an expected one by comparing the bytes. `Archive.Write()` puts the currents timestamp into the tar headers though which may differ based on timing which made tests that rely on this helper flaky.\n\nFix: `assertArchiveEqual()` now unpacks both archives and compares every entry's header and content, with the three timestamp fields (`ModTime`, `AccessTime`, `ChangeTime`) cleared.\n\nSome runs where this test failed for this reason:\n   - 2026-10-15, `test-latest (1.27.1, ubuntu-24.04-arm)`, `fix-json-output-buffering`: https://github.com/grafana/k6/actions/runs/38412038583/job/116363045247\n   - 2026-10-15, `test-latest (1.27.1, ubuntu-24.04-arm)`, `feat/prometheus-rw-proxy-option`: https://github.com/grafana/k6/actions/runs/38414823827/job/116322445895\n   - 2026-10-11, `test-latest (1.27.1, ubuntu-24.04-arm)`, `renovate/master-github-codeql-action-4.x`: https://github.com/grafana/k6/actions/runs/38149689796/job/11450",
+   "url": "https://github.com/grafana/k6/pull/6573",
+   "author": {
+    "login": "janHildebrandt98",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-15T11:32:19Z",
+   "merged_at": "2026-10-16T07:56:28Z",
+   "merge_commit": "3d8260b2590c1a87ea1b8d4443cca477cc718994",
+   "commits": [
+    {
+     "oid": "39771ffa166f4154d9b93cecf103980127b07b7e",
+     "authored_date": "2026-10-15T11:26:45Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "internal/cloudapi/v6/api_test.go",
+     "additions": 28,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6525,
+   "title": "webcrypto: add Ed25519 and X25519 support",
+   "body": "## What?\r\n\r\nAdds `Ed25519` and `X25519` to k6's WebCrypto API:\r\n\r\n- **Ed25519**: `generateKey`, `sign`/`verify`, `importKey`/`exportKey` (`raw`, `spki`, `pkcs8`, `jwk`)\r\n- **X25519**: `generateKey`, `deriveBits`, `importKey`/`exportKey` (`raw`, `spki`, `pkcs8`, `jwk`)\r\n\r\nThis picks up #4556 by @McMastS. The first commit ports that work onto a more recent master. The commits to follow add the curve25519 Web Platform Test suites and fix the failures (mainly Ed25519 JWK `d` encoding, X25519 key import, and rejecting small-order points in Ed25519 `verify`). They also tighten a few behaviors the WPT suites don't cover, with regression tests.\r\n\r\nNot included: X25519 `deriveKey` (not supported for ECDH either).\r\n\r\n## Why?\r\n\r\nI need Ed25519 for my load tests. The API I'm testing requires signed requests with Ed25519 (HTTP Message Signatures, RFC 9421). Note, I used an AI coding agent extensively for this. I've reviewed and tested the result, but I don't have deep cryptographic expertise, so ca",
+   "url": "https://github.com/grafana/k6/pull/6525",
+   "author": {
+    "login": "BlairCurrey",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-01T20:27:50Z",
+   "merged_at": "2026-10-16T08:58:39Z",
+   "merge_commit": "f7209955ce31df83081d0aa03c5c8395fe6b64d8",
+   "commits": [
+    {
+     "oid": "2abfbd8a3d4203214bf75f197f388095e67e24eb",
+     "authored_date": "2026-09-29T18:55:51Z"
+    },
+    {
+     "oid": "8fda7bf8ef0e4f86ff222c08ff507e73d48b6cc1",
+     "authored_date": "2026-09-29T19:38:28Z"
+    },
+    {
+     "oid": "3a974fffd7502e152f55270ec342cb0f6f72e12c",
+     "authored_date": "2026-09-30T18:08:02Z"
+    },
+    {
+     "oid": "4996f7f5ddbf86062f178020159d9cf5dff5075b",
+     "authored_date": "2026-10-01T19:05:10Z"
+    },
+    {
+     "oid": "85397fddfbc6a460bf47e4dc0b762ce0c2423454",
+     "authored_date": "2026-10-09T18:11:36Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "examples/webcrypto/derive_bits/derive-bits-x25519.js",
+     "additions": 55,
+     "deletions": 0
+    },
+    {
+     "path": "examples/webcrypto/generateKey/generateKey-ed25519.js",
+     "additions": 11,
+     "deletions": 0
+    },
+    {
+     "path": "examples/webcrypto/generateKey/generateKey-x25519.js",
+     "additions": 11,
+     "deletions": 0
+    },
+    {
+     "path": "examples/webcrypto/import_export/export-ed25519-keys.js",
+     "additions": 33,
+     "deletions": 0
+    },
+    {
+     "path": "examples/webcrypto/import_export/export-x25519-keys.js",
+     "additions": 34,
+     "deletions": 0
+    },
+    {
+     "path": "examples/webcrypto/import_export/import-ed25519-keys.js",
+     "additions": 33,
+     "deletions": 0
+    },
+    {
+     "path": "examples/webcrypto/import_export/import-export-jwk-ed25519.js",
+     "additions": 43,
+     "deletions": 0
+    },
+    {
+     "path": "examples/webcrypto/import_export/import-export-jwk-x25519.js",
+     "additions": 43,
+     "deletions": 0
+    },
+    {
+     "path": "examples/webcrypto/import_export/import-x25519-keys.js",
+     "additions": 33,
+     "deletions": 0
+    },
+    {
+     "path": "examples/webcrypto/sign_verify/sign-verify-ed25519.js",
+     "additions": 42,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/algorithm.go",
+     "additions": 38,
+     "deletions": 7
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/bits.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/ed25519.go",
+     "additions": 386,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/elliptic_curve.go",
+     "additions": 8,
+     "deletions": 3
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/jwk.go",
+     "additions": 262,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/key.go",
+     "additions": 22,
+     "deletions": 1
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/okp.go",
+     "additions": 51,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/signer.go",
+     "additions": 2,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/subtle_crypto.go",
+     "additions": 15,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/tests/okp_test.go",
+     "additions": 147,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/tests/subtle_crypto_test.go",
+     "additions": 56,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/tests/wpt-patches/WebCryptoAPI__derive_bits_keys__cfrg_curves_bits.js.patch",
+     "additions": 29,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/tests/wpt-patches/WebCryptoAPI__generateKey__failures.js.patch",
+     "additions": 5,
+     "deletions": 8
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/tests/wpt-patches/WebCryptoAPI__generateKey__successes.js.patch",
+     "additions": 6,
+     "deletions": 8
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/tests/wpt-patches/WebCryptoAPI__import_export__okp_importKey.js.patch",
+     "additions": 24,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/webcrypto/x25519.go",
+     "additions": 265,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6513,
+   "title": "chore(deps): update github/codeql-action action to v4.39.0 (master)",
+   "body": "This PR contains the following updates:\n\n| Package | Type | Update | Change |\n|---|---|---|---|\n| [github/codeql-action](https://redirect.github.com/github/codeql-action) | action | minor | `v4.35.4` \u2192 `v4.39.0` |\n\n---\n\n### Release Notes\n\n<details>\n<summary>github/codeql-action</summary>\n\n### [`v4.39.0`](https://redirect.github.com/github/codeql-action/releases/tag/v4.39.0)\n\n[Compare Source](https://redirect.github.com/github/codeql-action/compare/v4.38.3...v4.39.0)\n\n- *Breaking change*: Bump the minimum required CodeQL bundle version to 2.20.7. [#&#8203;4205](https://redirect.github.com/github/codeql-action/pull/4205)\n- The `codeql-action/analyze` step now validates that a correct argument for the `checkout_path` input has been provided. The `checkout_path` input must be set to the path where the repository that is being analyzed is checked out at on the runner, if that path is something other than the workspace root. If the path does not point to a repository checkout or is different",
+   "url": "https://github.com/grafana/k6/pull/6513",
+   "author": {
+    "login": "renovate-sh-app",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-01T03:01:51Z",
+   "merged_at": "2026-10-18T15:02:28Z",
+   "merge_commit": "8d451dc0f158c24aef18e9a3b5a5fcc0c99eb9c3",
+   "commits": [
+    {
+     "oid": "f85636bf601edf64e76babacbae2492a026c5b03",
+     "authored_date": "2026-10-18T12:02:22Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": ".github/workflows/codeql-analysis.yml",
+     "additions": 2,
+     "deletions": 2
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6582,
+   "title": "chore(deps): update googles to 4341edf (master)",
+   "body": "This PR contains the following updates:\n\n| Package | Type | Update | Change |\n|---|---|---|---|\n| [google.golang.org/genproto/googleapis/api](https://redirect.github.com/googleapis/go-genproto) | indirect | digest | `08b0e42` \u2192 `4341edf` |\n| [google.golang.org/genproto/googleapis/rpc](https://redirect.github.com/googleapis/go-genproto) | indirect | digest | `08b0e42` \u2192 `4341edf` |\n\n---\n\n### Configuration\n\n\ud83d\udcc5 **Schedule**: (UTC)\n\n- Branch creation\n  - Between 12:00 AM and 03:59 AM, only on Monday (`* 0-3 * * 1`)\n- Automerge\n  - At any time (no schedule defined)\n\n\ud83d\udea6 **Automerge**: Enabled.\n\n\u267b **Rebasing**: Whenever PR becomes conflicted, or you tick the rebase/retry checkbox.\n\n\ud83d\udd15 **Ignore**: Close this PR and you won't be reminded about these updates again.\n\n---\n\n - [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check this box\n\n---\n\n## Need help?\nYou can ask for more help in the following Slack channel: #proj-renovate-self-hosted. In that channel you can also find ADR and FAQ",
+   "url": "https://github.com/grafana/k6/pull/6582",
+   "author": {
+    "login": "renovate-sh-app",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-19T00:03:24Z",
+   "merged_at": "2026-10-19T03:02:12Z",
+   "merge_commit": "7a766e39a2a6ad364a2344ec057f7c19c250b2f3",
+   "commits": [
+    {
+     "oid": "3c05909f5e4a032f7aabc5c834167ca15b3db631",
+     "authored_date": "2026-10-19T00:03:19Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "go.mod",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "go.sum",
+     "additions": 4,
+     "deletions": 4
+    },
+    {
+     "path": "vendor/modules.txt",
+     "additions": 4,
+     "deletions": 4
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6590,
+   "title": "k6/html: treat checked and disabled as boolean attributes in serialize",
+   "body": "## What?\n\n`SerializeArray` (used by `serialize()`, `serializeArray()` and `serializeObject()`) now checks whether the `checked` and `disabled` attributes are present instead of comparing their value against `\"checked\"` and `\"disabled\"`.\n\nAdds `TestSerializeBooleanAttributes`, covering bare and empty valued `checked` and `disabled` attributes.\n\n## Why?\n\nBoth are boolean attributes, so `<input type=\"checkbox\" checked>` is checked and `<input disabled>` is disabled. Before this change a checked control written that way was dropped from the serialized form, and a disabled one was included. The element API in the same module (`InputElement.checked()`, `disabled()`) already uses presence checks.\n\n## Checklist\n\n- [x] I have performed a self-review of my code.\n- [x] I have commented on my code, particularly in hard-to-understand areas.\n- [x] I have added tests for my changes.\n- [ ] I have run linter and tests locally (`make check`) and all pass.\n\n## Checklist: Documentation (only for k6 mainta",
+   "url": "https://github.com/grafana/k6/pull/6590",
+   "author": {
+    "login": "sebxt",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-19T12:32:30Z",
+   "merged_at": "2026-10-20T15:58:33Z",
+   "merge_commit": "17a7603e5accdd9d64aa179b9f514056d37e6432",
+   "commits": [
+    {
+     "oid": "50831b8885b83e90c2e3e2c53093f9a22f0785a6",
+     "authored_date": "2026-10-19T12:32:27Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "js/modules/k6/html/serialize.go",
+     "additions": 5,
+     "deletions": 4
+    },
+    {
+     "path": "js/modules/k6/html/serialize_test.go",
+     "additions": 22,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6521,
+   "title": "chore(deps): update examples/ (master)",
+   "body": "This PR contains the following updates:\n\n| Package | Change | [Age](https://docs.renovatebot.com/merge-confidence/) | [Confidence](https://docs.renovatebot.com/merge-confidence/) | Type | Update | Pending |\n|---|---|---|---|---|---|---|\n| [golang.org/x/net](https://pkg.go.dev/golang.org/x/net) | [`v0.60.0` \u2192 `v0.61.0`](https://cs.opensource.google/go/x/net/+/refs/tags/v0.60.0...refs/tags/v0.61.0) | ![age](https://developer.mend.io/api/mc/badges/age/go/golang.org%2fx%2fnet/v0.61.0?slim=true) | ![confidence](https://developer.mend.io/api/mc/badges/confidence/go/golang.org%2fx%2fnet/v0.60.0/v0.61.0?slim=true) | indirect | minor |  |\n| [golang.org/x/sys](https://pkg.go.dev/golang.org/x/sys) | [`v0.48.0` \u2192 `v0.49.0`](https://cs.opensource.google/go/x/sys/+/refs/tags/v0.48.0...refs/tags/v0.49.0) | ![age](https://developer.mend.io/api/mc/badges/age/go/golang.org%2fx%2fsys/v0.49.0?slim=true) | ![confidence](https://developer.mend.io/api/mc/badges/confidence/go/golang.org%2fx%2fsys/v0.48.0/v0.4",
+   "url": "https://github.com/grafana/k6/pull/6521",
+   "author": {
+    "login": "renovate-sh-app",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-01T18:01:29Z",
+   "merged_at": "2026-10-21T09:01:26Z",
+   "merge_commit": "6a05a6818a2a690663c4e86e04a32f94ef0004a2",
+   "commits": [
+    {
+     "oid": "089546b0defe70f799fbe448635d5aa05fc453d5",
+     "authored_date": "2026-10-21T06:02:31Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "examples/docker-compose/opentelemetry/docker-compose.yml",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "examples/grpc_server/go.mod",
+     "additions": 3,
+     "deletions": 3
+    },
+    {
+     "path": "examples/grpc_server/go.sum",
+     "additions": 6,
+     "deletions": 6
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6595,
+   "title": "chore(deps): update golang docker tag to v1.27.3 (master)",
+   "body": "This PR contains the following updates:\n\n| Package | Type | Update | Change |\n|---|---|---|---|\n| [golang](https://hub.docker.com/_/golang) ([source](https://redirect.github.com/docker-library/golang)) | stage | patch | `1.27.2-alpine` \u2192 `1.27.3-alpine` |\n\n---\n\n### Configuration\n\n\ud83d\udcc5 **Schedule**: (UTC)\n\n- Branch creation\n  - Between 12:00 AM and 03:59 AM, only on Monday (`* 0-3 * * 1`)\n- Automerge\n  - At any time (no schedule defined)\n\n\ud83d\udea6 **Automerge**: Enabled.\n\n\u267b **Rebasing**: Whenever PR becomes conflicted, or you tick the rebase/retry checkbox.\n\n\ud83d\udd15 **Ignore**: Close this PR and you won't be reminded about this update again.\n\n---\n\n - [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check this box\n\n---\n\n## Need help?\nYou can ask for more help in the following Slack channel: #proj-renovate-self-hosted. In that channel you can also find ADR and FAQ docs in the Resources section.\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0NC4xNTEuMiIsInVwZGF0ZWRJblZlciI6IjQ0LjE1MS4yIiwidGFyZ2V",
+   "url": "https://github.com/grafana/k6/pull/6595",
+   "author": {
+    "login": "renovate-sh-app",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-21T12:02:44Z",
+   "merged_at": "2026-10-21T12:59:55Z",
+   "merge_commit": "8db6a2cd1417216fefd9e3de92d43cd0150e59c2",
+   "commits": [
+    {
+     "oid": "65c7bed717e7a9fe7eeb01bb3cdd4cf551f69e14",
+     "authored_date": "2026-10-21T12:02:36Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "Dockerfile",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6302,
+   "title": "fix(deps): update module buf.build/gen/go/prometheus/prometheus/protocolbuffers/go to v1.36.12-20261001224011-d7f6cfecf2b8.2 (master)",
+   "body": "This PR contains the following updates:\n\n| Package | Change | [Age](https://docs.renovatebot.com/merge-confidence/) | [Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| buf.build/gen/go/prometheus/prometheus/protocolbuffers/go | `v1.36.11-20260707164124-2360da55afce.1` \u2192 `v1.36.12-20261001224011-d7f6cfecf2b8.2` | ![age](https://developer.mend.io/api/mc/badges/age/go/buf.build%2fgen%2fgo%2fprometheus%2fprometheus%2fprotocolbuffers%2fgo/v1.36.12-20261001224011-d7f6cfecf2b8.2?slim=true) | ![confidence](https://developer.mend.io/api/mc/badges/confidence/go/buf.build%2fgen%2fgo%2fprometheus%2fprometheus%2fprotocolbuffers%2fgo/v1.36.11-20260707164124-2360da55afce.1/v1.36.12-20261001224011-d7f6cfecf2b8.2?slim=true) |\n\n---\n\n### Configuration\n\n\ud83d\udcc5 **Schedule**: (UTC)\n\n- Branch creation\n  - Between 12:00 AM and 03:59 AM, only on Monday (`* 0-3 * * 1`)\n- Automerge\n  - At any time (no schedule defined)\n\n\ud83d\udea6 **Automerge**: Disabled by config. Please merge this manually o",
+   "url": "https://github.com/grafana/k6/pull/6302",
+   "author": {
+    "login": "renovate-sh-app",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-08-17T00:04:26Z",
+   "merged_at": "2026-10-21T15:23:49Z",
+   "merge_commit": "c6da94d028ec0169f2a5be3f0949a8c369333003",
+   "commits": [
+    {
+     "oid": "32486480e6cd354f1a53c0a98243174f7b6d74fa",
+     "authored_date": "2026-10-21T15:01:47Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "go.mod",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "go.sum",
+     "additions": 4,
+     "deletions": 4
+    },
+    {
+     "path": "vendor/buf.build/gen/go/gogo/protobuf/protocolbuffers/go/gogoproto/gogo.pb.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "vendor/buf.build/gen/go/gogo/protobuf/protocolbuffers/go/gogoproto/gogo_protoopaque.pb.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "vendor/buf.build/gen/go/prometheus/prometheus/protocolbuffers/go/remote.pb.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "vendor/buf.build/gen/go/prometheus/prometheus/protocolbuffers/go/remote_protoopaque.pb.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "vendor/buf.build/gen/go/prometheus/prometheus/protocolbuffers/go/types.pb.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "vendor/buf.build/gen/go/prometheus/prometheus/protocolbuffers/go/types_protoopaque.pb.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "vendor/modules.txt",
+     "additions": 2,
+     "deletions": 2
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 5711,
+   "title": "feat: unmarshal grpc-status-details-bin trailer into error details",
+   "body": "## What?\n\nRead the `grpc-status-details-bin` trailer from gRPC error responses and expose its structured details in `response.error.details` in k6 test scripts.\n\nAlso fixes marshaling of standard Google protobuf types in error responses by using `Resolver: nil` instead of the per-connection user-defined type registry.\n\n## Why?\n\ngRPC servers use the `grpc-status-details-bin` trailer as the standard mechanism to attach rich structured error information \u2014 things like `ErrorInfo` (reason, domain, metadata), `BadRequest` field violations, `RetryInfo`, etc. Previously k6 ignored this trailer entirely, always returning an empty `details` array even when the server sent structured errors.\n\nTwo issues were preventing this from working:\n\n1. The trailer was never read \u2014 `response.error.details` was always empty regardless of what the server sent.\n2. Even if the trailer had been read, the error was marshaled using `Resolver: c.types`, which only knows about user-defined protobuf types loaded via `",
+   "url": "https://github.com/grafana/k6/pull/5711",
+   "author": {
+    "login": "yordis",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-03-04T23:29:47Z",
+   "merged_at": "2026-10-26T10:40:11Z",
+   "merge_commit": "8ba085f9e15cb059ba82a1ef91e76d056da63d99",
+   "commits": [
+    {
+     "oid": "07d4fbf98a66a65974f472aa88e3b5645ba7883f",
+     "authored_date": "2026-03-07T04:49:01Z"
+    },
+    {
+     "oid": "c14b884b53576f8f9fbdf3c4624919061d6d8867",
+     "authored_date": "2026-04-30T15:58:53Z"
+    },
+    {
+     "oid": "3f04bcd1c357a25bc957c591591f4bb5951b39cf",
+     "authored_date": "2026-07-18T20:16:26Z"
+    },
+    {
+     "oid": "34aee0943afcc48314999b9da958d3dda16162af",
+     "authored_date": "2026-07-30T17:33:15Z"
+    },
+    {
+     "oid": "1e6fa7f4dbb584e2e2674440d4dfb821fed94fa5",
+     "authored_date": "2026-08-14T22:04:28Z"
+    },
+    {
+     "oid": "cdfcfd05868bbda1eab4a40ab99397a51c1b5701",
+     "authored_date": "2026-09-01T03:37:04Z"
+    },
+    {
+     "oid": "57c686519be23dd006c0d56db2a0c5e37201adec",
+     "authored_date": "2026-10-01T03:51:04Z"
+    },
+    {
+     "oid": "a42f24d213403e714f70c9812ef895c534461a4e",
+     "authored_date": "2026-10-22T14:06:39Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "examples/grpc_error_details.js",
+     "additions": 39,
+     "deletions": 0
+    },
+    {
+     "path": "go.mod",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "internal/js/modules/k6/grpc/client_test.go",
+     "additions": 73,
+     "deletions": 0
+    },
+    {
+     "path": "internal/lib/netext/grpcext/conn.go",
+     "additions": 85,
+     "deletions": 13
+    },
+    {
+     "path": "internal/lib/netext/grpcext/conn_test.go",
+     "additions": 87,
+     "deletions": 2
+    },
+    {
+     "path": "internal/lib/testutils/grpcservice/service.go",
+     "additions": 27,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6567,
+   "title": "Fix '=' in K6_BROWSER_SCREENSHOTS_OUTPUT values",
+   "body": "## What?\n\n`K6_BROWSER_SCREENSHOTS_OUTPUT` key/value pairs are now split on the first `=` only, so values may contain `=`. An empty key is rejected.\n\nThis also fixes the `url` validity check, which panics on master. It only reads `u.Scheme` and `u.Host` when `url.ParseRequestURI` has failed, and `u` is nil in that case:\n\n```go\nu, err := url.ParseRequestURI(v)\nif err != nil && u.Scheme != \"\" && u.Host != \"\" {\n```\n\nSo any `url` value that fails to parse, such as `K6_BROWSER_SCREENSHOTS_OUTPUT=url=` or `url=foo`, crashes k6 today. The check now rejects a `url` that fails to parse or has no scheme or host (e.g. `/relative`, `foo:bar`), which matches what the old condition seemed to intend: such values can't be used for an upload and would otherwise only fail when a screenshot is persisted. The existing `invalid_format` test case (`url==https://...`) is still rejected, but now with `invalid url` instead of the generic k=v error.\n\n## Why?\n\nSplitting on every `=` and requiring exactly two part",
+   "url": "https://github.com/grafana/k6/pull/6567",
+   "author": {
+    "login": "ankur22",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-14T15:25:19Z",
+   "merged_at": "2026-10-28T10:57:35Z",
+   "merge_commit": "fc7c0653e18fb385061cc1ee1a03437406a39ec0",
+   "commits": [
+    {
+     "oid": "c3ca2ae03ad6ebd01e22de66436c95524a77f70e",
+     "authored_date": "2026-10-14T15:19:40Z"
+    },
+    {
+     "oid": "9a0a9bc6f307a57dc47c2ca6bd7f583fd29b22c6",
+     "authored_date": "2026-10-14T15:35:13Z"
+    },
+    {
+     "oid": "8018864dadf0f4c817e8436513c69b54b8f1a186",
+     "authored_date": "2026-10-14T16:17:57Z"
+    },
+    {
+     "oid": "358075db08f365b3b544dd01b14ced0538badae0",
+     "authored_date": "2026-10-14T16:18:11Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "internal/js/modules/k6/browser/browser/file_persister.go",
+     "additions": 6,
+     "deletions": 7
+    },
+    {
+     "path": "internal/js/modules/k6/browser/browser/file_persister_test.go",
+     "additions": 43,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6607,
+   "title": "Add --http-debug-redact to hide passwords and tokens in debug output",
+   "body": "## What?\n\nA new `--http-debug-redact` option masks credentials in the `--http-debug` log. With it, these\nheaders are shown as `***REDACTED***`: `Authorization`, `Proxy-Authorization`, `Cookie`,\n`Set-Cookie`, `X-Api-Key`, `X-Auth-Token` and `X-Amz-Security-Token`.\n\nOnly the secret part is masked, so the output is still useful for debugging:\n\n    Authorization: Bearer ***REDACTED***\n    Cookie: session=***REDACTED***; theme=***REDACTED***\n    Set-Cookie: sid=***REDACTED***; Path=/; HttpOnly\n\nRedaction is opt-in and works with both `--http-debug` and `--http-debug=full`:\n\n    k6 run --http-debug=full --http-debug-redact script.js\n\n| Where | Name |\n|---|---|\n| CLI | `--http-debug-redact` |\n| Environment | `K6_HTTP_DEBUG_REDACT=true` |\n| Script / config `options` | `httpDebugRedact: true` |\n\n`--http-debug` itself is unchanged, so without the new option the output is the same as before. The\nsame applies to gRPC metadata, because gRPC uses the same debug logging.\n\n## Why?\n\nDebug logs get copi",
+   "url": "https://github.com/grafana/k6/pull/6607",
+   "author": {
+    "login": "digitalcrab",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-22T11:03:28Z",
+   "merged_at": "2026-10-28T15:05:05Z",
+   "merge_commit": "006583cf0feebccbb106a05ef3ea705759b4be00",
+   "commits": [
+    {
+     "oid": "3da11bb97339ad79c8b3537fd5c6627fafaaa820",
+     "authored_date": "2026-10-27T10:47:29Z"
+    },
+    {
+     "oid": "b475de6d6da8eff7dc99b5fd777b545bd1ad033a",
+     "authored_date": "2026-10-27T19:36:49Z"
+    },
+    {
+     "oid": "78afedeb4eb3b79282cb4c3b62ed5a43fa804c68",
+     "authored_date": "2026-10-28T13:42:44Z"
+    },
+    {
+     "oid": "577388061cc2f5483d4331fb03e5d7b59e01bef0",
+     "authored_date": "2026-10-28T13:44:20Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "internal/cmd/config.go",
+     "additions": 4,
+     "deletions": 0
+    },
+    {
+     "path": "internal/cmd/options.go",
+     "additions": 2,
+     "deletions": 0
+    },
+    {
+     "path": "internal/cmd/tests/cmd_run_test.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "internal/js/modules/k6/execution/execution_test.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "internal/js/modules/k6/grpc/client_test.go",
+     "additions": 53,
+     "deletions": 1
+    },
+    {
+     "path": "internal/lib/netext/grpcext/conn.go",
+     "additions": 18,
+     "deletions": 8
+    },
+    {
+     "path": "internal/lib/netext/httpdebug/httpdebug.go",
+     "additions": 119,
+     "deletions": 0
+    },
+    {
+     "path": "internal/lib/netext/httpdebug/httpdebug_test.go",
+     "additions": 104,
+     "deletions": 0
+    },
+    {
+     "path": "js/modules/k6/http/request_test.go",
+     "additions": 86,
+     "deletions": 0
+    },
+    {
+     "path": "lib/netext/httpext/httpdebug_transport.go",
+     "additions": 13,
+     "deletions": 4
+    },
+    {
+     "path": "lib/netext/httpext/request.go",
+     "additions": 1,
+     "deletions": 0
+    },
+    {
+     "path": "lib/options.go",
+     "additions": 6,
+     "deletions": 0
+    },
+    {
+     "path": "lib/options_test.go",
+     "additions": 6,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6565,
+   "title": "fix(lib): accept standard names for ChaCha20 TLS cipher suites",
+   "body": "## What?\n\n`tlsCipherSuites` now accepts `TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256` and\n`TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256`, in addition to the existing names\nwithout the `_SHA256` suffix. Both names map to the same suite IDs.\n\n`SupportedTLSCipherSuitesToString` is unchanged, so the names k6 reports\n(e.g. `tls_cipher_suite`) stay the same and existing users aren't affected.\n\n## Why?\n\nThe `_SHA256` names are the standard IANA names, and they're what Go returns from\n`tls.CipherSuites()`. Go keeps the shorter names only as legacy aliases. The k6 docs\npoint users to the Go `crypto/tls` docs for the list of names, so following them\nled to an `unknown cipher suite` error.\n\n## Checklist\n\n- [x] I have performed a self-review of my code.\n- [x] I have commented on my code, particularly in hard-to-understand areas.\n- [x] I have added tests for my changes.\n- [x] I have run tests locally (`go test ./lib/`) and all pass. Ran `make lint` on Windows;\n      it only reported CRLF/Windows-s",
+   "url": "https://github.com/grafana/k6/pull/6565",
+   "author": {
+    "login": "HakeemTheEmperor",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-10-13T15:53:12Z",
+   "merged_at": "2026-11-05T11:06:11Z",
+   "merge_commit": "9db074b62e1ef56743080b6cb0c701a2c5388af5",
+   "commits": [
+    {
+     "oid": "97ec1324e1e09cb42b14787281e7dfe85da938fc",
+     "authored_date": "2026-10-13T15:23:23Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "lib/options_test.go",
+     "additions": 12,
+     "deletions": 0
+    },
+    {
+     "path": "lib/tlsconfig.go",
+     "additions": 5,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6652,
+   "title": "Updages Grafana images in examples",
+   "body": "## What?\n\nReplaces https://github.com/grafana/k6/pull/6519\n\n## Why?\n\nKeep Grafana images up-to-date to show all its features to users trying it through these examples.\n\n## Checklist\n\n<!-- \nIf you haven't read the contributing guidelines https://github.com/grafana/k6/blob/master/CONTRIBUTING.md \nand code of conduct https://github.com/grafana/k6/blob/master/CODE_OF_CONDUCT.md yet, please do so\n-->\n\n- [x] I have performed a self-review of my code.\n- [ ] I have commented on my code, particularly in hard-to-understand areas.\n- [ ] I have added tests for my changes.\n- [ ] I have run linter and tests locally (`make check`) and all pass.\n\n## Checklist: Documentation (only for k6 maintainers and if relevant)\n\n**Please do not merge this PR until the following items are filled out.**\n\n- [x] I have added the correct milestone and labels to the PR.\n- [ ] I have updated the release notes: _link_\n- [ ] I have updated or added an issue to the [k6-documentation](https://github.com/grafana/k6-docs): gra",
+   "url": "https://github.com/grafana/k6/pull/6652",
+   "author": {
+    "login": "AgnesToulet",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-11-09T09:05:08Z",
+   "merged_at": "2026-11-09T15:06:24Z",
+   "merge_commit": "776b2f1e6aa756b9ef73aa737241c248abcb8c31",
+   "commits": [
+    {
+     "oid": "65fb0c8d6eeb14e01daff04254e48f72b4878c78",
+     "authored_date": "2026-11-09T08:55:20Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "examples/docker-compose/influxdb-v1/docker-compose.yml",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "examples/docker-compose/opentelemetry/docker-compose.yml",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6637,
+   "title": "fix(browser): Keep context pages in attachment order",
+   "body": "## What?\n\n`context.pages()` returns pages in the order they were attached, and closed pages drop out.\n\n## Why?\n\nPages came from a map, so the same index could point to a different page between calls.\n\n## Checklist\n\n- [x] I have performed a self-review of my code.\n- [x] I have commented on my code, particularly in hard-to-understand areas.\n- [x] I have added tests for my changes.\n- [ ] I have run linter and tests locally (`make check`) and all pass.\n\n## Checklist: Documentation (only for k6 maintainers and if relevant)\n\n- [ ] I have added the correct milestone and labels to the PR.\n- [ ] I have updated the release notes: _link_\n- [ ] I have updated or added an issue to the [k6-documentation](https://github.com/grafana/k6-docs): grafana/k6-docs#NUMBER if applicable\n- [ ] I have updated or added an issue to the [TypeScript definitions](https://github.com/grafana/k6-DefinitelyTyped/tree/master/types/k6): grafana/k6-DefinitelyTyped#NUMBER if applicable\n\n## Related PR(s)/Issue(s)\n\nFixes http",
+   "url": "https://github.com/grafana/k6/pull/6637",
+   "author": {
+    "login": "adityareddy-dev",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-11-04T11:02:18Z",
+   "merged_at": "2026-11-10T09:48:00Z",
+   "merge_commit": "0ef887312496f1bf0ff5fb5b9c557ca8ab4c3883",
+   "commits": [
+    {
+     "oid": "f6136e14275dab973a347f1c7ff22fad4c331dee",
+     "authored_date": "2026-11-04T10:47:14Z"
+    },
+    {
+     "oid": "d2a560fa5c25e6ccd856db7979d92be6f0b7d3f6",
+     "authored_date": "2026-11-04T21:32:50Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "internal/js/modules/k6/browser/common/browser.go",
+     "additions": 12,
+     "deletions": 4
+    },
+    {
+     "path": "internal/js/modules/k6/browser/common/browser_test.go",
+     "additions": 26,
+     "deletions": 0
+    },
+    {
+     "path": "internal/js/modules/k6/browser/tests/pages_order_test.go",
+     "additions": 41,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 6660,
+   "title": "Bump version to 2.4.0",
+   "body": "## What?\n\nBump go version\n\n## Why?\nTo be able to release next version\n## Checklist\n\n<!-- \nIf you haven't read the contributing guidelines https://github.com/grafana/k6/blob/master/CONTRIBUTING.md \nand code of conduct https://github.com/grafana/k6/blob/master/CODE_OF_CONDUCT.md yet, please do so\n-->\n\n- [ ] I have performed a self-review of my code.\n- [ ] I have commented on my code, particularly in hard-to-understand areas.\n- [ ] I have added tests for my changes.\n- [ ] I have run linter and tests locally (`make check`) and all pass.\n\n## Checklist: Documentation (only for k6 maintainers and if relevant)\n\n**Please do not merge this PR until the following items are filled out.**\n\n- [ ] I have added the correct milestone and labels to the PR.\n- [ ] I have updated the release notes: _link_\n- [ ] I have updated or added an issue to the [k6-documentation](https://github.com/grafana/k6-docs): grafana/k6-docs#NUMBER if applicable\n- [ ] I have updated or added an issue to the [TypeScript definit",
+   "url": "https://github.com/grafana/k6/pull/6660",
+   "author": {
+    "login": "mstoykov",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "master",
+   "created_at": "2026-11-11T11:48:06Z",
+   "merged_at": "2026-11-12T13:15:47Z",
+   "merge_commit": "dd9395906d48437a8d7ab53e309afa47ad8d67e0",
+   "commits": [
+    {
+     "oid": "c509f666c2d2eb6a654804bbffe0d3f4db14e530",
+     "authored_date": "2026-11-11T11:46:57Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "internal/build/version.go",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  }
+ ]
+}

@@ -1,0 +1,1060 @@
+{
+ "meta": {
+  "tool_version": "1.0",
+  "repo": "cli/cli",
+  "default_branch": "trunk",
+  "branches": [
+   "trunk"
+  ],
+  "run_at": "2026-11-14T07:51:34Z",
+  "windows": {
+   "current": {
+    "start": "2026-10-31T07:51:34Z",
+    "end": "2026-11-14T07:51:34Z"
+   },
+   "previous": {
+    "start": "2026-10-17T07:51:34Z",
+    "end": "2026-10-31T07:51:34Z"
+   },
+   "cfr_eval": {
+    "start": "2026-10-17T07:51:34Z",
+    "end": "2026-10-31T07:51:34Z"
+   }
+  },
+  "fetch_range": {
+   "start": "2026-10-17T07:51:34Z",
+   "end": "2026-11-14T07:51:34Z"
+  },
+  "config": {
+   "window_days": 14,
+   "revert_window_days": 14
+  }
+ },
+ "reconciliation": {
+  "status": "ok",
+  "slices": []
+ },
+ "prs": [
+  {
+   "number": 14714,
+   "title": "Clarify --comments behavior when piped in view commands",
+   "body": "<!--\nThank you for contributing to GitHub CLI!\n\nIf you are proposing a fix for a security issue, STOP and follow .github/SECURITY.md instead.\n\nKeep the entire pull request self-contained, reviewer-facing, and diegetic: describe the\nchange, rationale, and evidence within the context of the repository and pull request. Do not\nnarrate how the pull request was produced or refer to private conversations, prior agent work,\nor other behind-the-scenes context. Omit those details unless they materially affect review;\nif they do, state the relevant fact and its significance directly.\n-->\n\n<!-- List related issues here. Use `fixes` or `closes` keywords to associate an issue number. -->\n\n### Description\n\n<!--\nWhat's the problem? How are we addressing it?\n\nWrite for a reviewer who has not worked in this part of the codebase. Give them the\nbackground they need before the problem makes sense, and avoid jargon.\n-->\n\nRelated #14692\n\nThe view commands intentionally render `--comments` differently depend",
+   "url": "https://github.com/cli/cli/pull/14714",
+   "author": {
+    "login": "arsalanyavari",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "trunk",
+   "created_at": "2026-10-16T10:47:52Z",
+   "merged_at": "2026-10-16T11:54:06Z",
+   "merge_commit": "b758ce35643e64cfe4d61bc58b6009c4088e5e0c",
+   "commits": [
+    {
+     "oid": "4536b2180ef7444227b41d4b37b80ffe80912655",
+     "authored_date": "2026-10-16T10:38:27Z"
+    },
+    {
+     "oid": "8ea0faaa3d4c7aaaf1378db20a2b238013270a00",
+     "authored_date": "2026-10-16T11:35:43Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "pkg/cmd/discussion/view/view.go",
+     "additions": 2,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/issue/view/view.go",
+     "additions": 3,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/pr/view/view.go",
+     "additions": 3,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14720,
+   "title": "Support HTML documents in `gh issue artifact`",
+   "body": "<!--\nThank you for contributing to GitHub CLI!\n\nIf you are proposing a fix for a security issue, STOP and follow .github/SECURITY.md instead.\n\nKeep the entire pull request self-contained, reviewer-facing, and diegetic: describe the\nchange, rationale, and evidence within the context of the repository and pull request. Do not\nnarrate how the pull request was produced or refer to private conversations, prior agent work,\nor other behind-the-scenes context. Omit those details unless they materially affect review;\nif they do, state the relevant fact and its significance directly.\n-->\n\n<!-- List related issues here. Use `fixes` or `closes` keywords to associate an issue number. -->\n\nThis builds on the `gh issue artifact` commands from the pull request stack tracked in #14563.\n\n### Description\n\n<!--\nWhat's the problem? How are we addressing it?\n\nWrite for a reviewer who has not worked in this part of the codebase. Give them the\nbackground they need before the problem makes sense, and avoid jar",
+   "url": "https://github.com/cli/cli/pull/14720",
+   "author": {
+    "login": "BagToad",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "trunk",
+   "created_at": "2026-10-16T18:54:56Z",
+   "merged_at": "2026-10-16T21:00:15Z",
+   "merge_commit": "40784251452bad4bd40c165de21c302db88e8a39",
+   "commits": [
+    {
+     "oid": "4fc08acb5451ab831c8f0a179fb966a6c29eb529",
+     "authored_date": "2026-10-15T22:22:54Z"
+    },
+    {
+     "oid": "6cfbe26f7ff3aadadc8f534f8b82559b949fc538",
+     "authored_date": "2026-10-15T22:22:54Z"
+    },
+    {
+     "oid": "4537a92f3352c8c4c1fd1b8febba1596059fc9e0",
+     "authored_date": "2026-10-15T22:23:07Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "pkg/cmd/issue/artifact/artifact.go",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/client/types.go",
+     "additions": 6,
+     "deletions": 4
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/create/create.go",
+     "additions": 41,
+     "deletions": 35
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/create/create_test.go",
+     "additions": 155,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/download/download.go",
+     "additions": 22,
+     "deletions": 13
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/download/download_test.go",
+     "additions": 60,
+     "deletions": 3
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/edit/edit.go",
+     "additions": 8,
+     "deletions": 5
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/edit/edit_test.go",
+     "additions": 61,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/list/list.go",
+     "additions": 4,
+     "deletions": 3
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/list/list_test.go",
+     "additions": 26,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/shared/content.go",
+     "additions": 7,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/shared/content_test.go",
+     "additions": 51,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/shared/shared.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/shared/shared_test.go",
+     "additions": 9,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/view/view.go",
+     "additions": 13,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/issue/artifact/view/view_test.go",
+     "additions": 82,
+     "deletions": 0
+    },
+    {
+     "path": "skills/gh/SKILL.md",
+     "additions": 31,
+     "deletions": 26
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14751,
+   "title": "chore(deps): bump the codeql-actions group with 3 updates",
+   "body": "Bumps the codeql-actions group with 3 updates: [github/codeql-action/init](https://github.com/github/codeql-action), [github/codeql-action/analyze](https://github.com/github/codeql-action) and [github/codeql-action/upload-sarif](https://github.com/github/codeql-action).\n\nUpdates `github/codeql-action/init` from 4.38.3 to 4.39.0\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/github/codeql-action/releases\">github/codeql-action/init's releases</a>.</em></p>\n<blockquote>\n<h2>v4.39.0</h2>\n<ul>\n<li><em>Breaking change</em>: Bump the minimum required CodeQL bundle version to 2.20.7. <a href=\"https://redirect.github.com/github/codeql-action/pull/4205\">#4205</a></li>\n<li>The <code>codeql-action/analyze</code> step now validates that a correct argument for the <code>checkout_path</code> input has been provided. The <code>checkout_path</code> input must be set to the path where the repository that is being analyzed is checked out at on the runner, if th",
+   "url": "https://github.com/cli/cli/pull/14751",
+   "author": {
+    "login": "dependabot",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "trunk",
+   "created_at": "2026-10-19T14:04:47Z",
+   "merged_at": "2026-10-19T14:53:18Z",
+   "merge_commit": "5b0cc54248a3d069b96147188d13cd2f1e976176",
+   "commits": [
+    {
+     "oid": "c808a2ac90be021cfb3cfd872f7351fc0f460b32",
+     "authored_date": "2026-10-19T14:04:43Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": ".github/workflows/codeql.yml",
+     "additions": 3,
+     "deletions": 3
+    },
+    {
+     "path": ".github/workflows/govulncheck.yml",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14719,
+   "title": "Fix help text that references nonexistent flags",
+   "body": "<!--\nThank you for contributing to GitHub CLI!\n\nIf you are proposing a fix for a security issue, STOP and follow .github/SECURITY.md instead.\n\nKeep the entire pull request self-contained, reviewer-facing, and diegetic: describe the\nchange, rationale, and evidence within the context of the repository and pull request. Do not\nnarrate how the pull request was produced or refer to private conversations, prior agent work,\nor other behind-the-scenes context. Omit those details unless they materially affect review;\nif they do, state the relevant fact and its significance directly.\n-->\n\n<!-- List related issues here. Use `fixes` or `closes` keywords to associate an issue number. -->\n\nFixes #14718\n\n### Description\n\n<!--\nWhat's the problem? How are we addressing it?\n\nWrite for a reviewer who has not worked in this part of the codebase. Give them the\nbackground they need before the problem makes sense, and avoid jargon.\n-->\n\nThree help texts reference flags that their commands don't have:\n\n- `gh ",
+   "url": "https://github.com/cli/cli/pull/14719",
+   "author": {
+    "login": "BagToad",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "trunk",
+   "created_at": "2026-10-16T18:10:58Z",
+   "merged_at": "2026-10-19T18:28:36Z",
+   "merge_commit": "ed40e856ffecd31286733876c613a2d3745e12bd",
+   "commits": [
+    {
+     "oid": "f3e2147f249b228e8a2cbca68c47fc6ef99d3747",
+     "authored_date": "2026-10-16T18:00:41Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "pkg/cmd/ruleset/view/view.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/search/issues/issues.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/search/prs/prs.go",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14767,
+   "title": "Bump Go to 1.27.3",
+   "body": "This PR updates Go to the latest stable release.\n\n* **go directive:** `1.27.0`\n* **toolchain:** `go1.27.3`\n* **golangci-lint:** `v2.15.0`\n* **govulncheck:** `v1.8.0`",
+   "url": "https://github.com/cli/cli/pull/14767",
+   "author": {
+    "login": "github-actions",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "trunk",
+   "created_at": "2026-10-20T15:05:10Z",
+   "merged_at": "2026-10-20T15:18:23Z",
+   "merge_commit": "5cfe30624ffccf88c319f1e6528a033657b00c99",
+   "commits": [
+    {
+     "oid": "cbefbade4d9485b7590fd2d3b9aef08dec48ca53",
+     "authored_date": "2026-10-20T15:05:04Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": ".github/golangci-lint-version",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "go.mod",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14770,
+   "title": "Merge v2.102.1 release branch into trunk",
+   "body": "<!--\nThank you for contributing to GitHub CLI!\n\nIf you are proposing a fix for a security issue, STOP and follow .github/SECURITY.md instead.\n\nKeep the entire pull request self-contained, reviewer-facing, and diegetic: describe the\nchange, rationale, and evidence within the context of the repository and pull request. Do not\nnarrate how the pull request was produced or refer to private conversations, prior agent work,\nor other behind-the-scenes context. Omit those details unless they materially affect review;\nif they do, state the relevant fact and its significance directly.\n-->\n\n<!-- List related issues here. Use `fixes` or `closes` keywords to associate an issue number. -->\n\n### Description\n\n<!--\nWhat's the problem? How are we addressing it?\n\nWrite for a reviewer who has not worked in this part of the codebase. Give them the\nbackground they need before the problem makes sense, and avoid jargon.\n-->\n\n[v2.102.1](https://github.com/cli/cli/releases/tag/v2.102.1) was released from a [rele",
+   "url": "https://github.com/cli/cli/pull/14770",
+   "author": {
+    "login": "BagToad",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "trunk",
+   "created_at": "2026-10-20T19:36:59Z",
+   "merged_at": "2026-10-20T19:47:10Z",
+   "merge_commit": "ad27e286ab6eb101f192176defdfea7475e2a267",
+   "commits": [
+    {
+     "oid": "823af25b5f3974ac77717cdb5a9ae66e4ee96b03",
+     "authored_date": "2026-10-20T18:46:04Z"
+    },
+    {
+     "oid": "89d7dcec017194af1d6f8853176b2dae9c1da762",
+     "authored_date": "2026-10-09T10:16:48Z"
+    },
+    {
+     "oid": "985fbb2990e0abe2835b0725ea19b3a844244ce2",
+     "authored_date": "2026-10-20T19:33:14Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [],
+   "files_truncated": false
+  },
+  {
+   "number": 14766,
+   "title": "chore(deps): bump github.com/gabriel-vasile/mimetype from 1.4.15 to 1.4.16",
+   "body": "Bumps [github.com/gabriel-vasile/mimetype](https://github.com/gabriel-vasile/mimetype) from 1.4.15 to 1.4.16.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/gabriel-vasile/mimetype/releases\">github.com/gabriel-vasile/mimetype's releases</a>.</em></p>\n<blockquote>\n<h2>improve CDF detection</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>readme: add badge for tests passing by <a href=\"https://github.com/gabriel-vasile\"><code>@\u200bgabriel-vasile</code></a> in <a href=\"https://redirect.github.com/gabriel-vasile/mimetype/pull/835\">gabriel-vasile/mimetype#835</a></li>\n<li>all: refactor to remove duplicated functions by <a href=\"https://github.com/gabriel-vasile\"><code>@\u200bgabriel-vasile</code></a> in <a href=\"https://redirect.github.com/gabriel-vasile/mimetype/pull/834\">gabriel-vasile/mimetype#834</a></li>\n<li>cdf: traverse tree instead of linear when inspecting cdf directories by <a href=\"https://github.com/gabriel-vasile\"><code>@\u200bgabriel-vasile</code></a> in <a",
+   "url": "https://github.com/cli/cli/pull/14766",
+   "author": {
+    "login": "dependabot",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "trunk",
+   "created_at": "2026-10-20T14:03:03Z",
+   "merged_at": "2026-10-21T07:45:12Z",
+   "merge_commit": "401854ece831e121c046e94566c7f5195fc559f6",
+   "commits": [
+    {
+     "oid": "7d01a387524920742414a38eca9f8544193a5cbc",
+     "authored_date": "2026-10-20T14:02:59Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "go.mod",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "go.sum",
+     "additions": 2,
+     "deletions": 2
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14148,
+   "title": "Update glamour to v2",
+   "body": "Fixes #3718.\n\nThis updates the markdown stack to Glamour v2 and keeps the status column spacing aligned with trunk under Lip Gloss v2. Lip Gloss v2 counts the right border inside `Width()`, so the left status column adds one cell to preserve the previous content width and spacing.\n\nThe log fixture changes are separate from that width adjustment. Glamour v2 now wraps with Lip Gloss rather than the previous `ansi`-based wrapper, so break behavior changed for width-constrained text. For example, `-o` previously could wrap with the `-` at the end of the line, but now it stays together and wraps one cell later.",
+   "url": "https://github.com/cli/cli/pull/14148",
+   "author": {
+    "login": "heaths",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "trunk",
+   "created_at": "2026-08-15T00:09:53Z",
+   "merged_at": "2026-10-21T08:50:05Z",
+   "merge_commit": "1531837d8578fecd64eb8050d44a3665d85f9219",
+   "commits": [
+    {
+     "oid": "389b60d0b6df69299ccdd36f9a757fe7cf7f5b6a",
+     "authored_date": "2026-08-15T00:05:29Z"
+    },
+    {
+     "oid": "350fa040f8a13c272a552ae8926dffc38a5a94bf",
+     "authored_date": "2026-10-20T18:16:47Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "go.mod",
+     "additions": 3,
+     "deletions": 5
+    },
+    {
+     "path": "go.sum",
+     "additions": 6,
+     "deletions": 10
+    },
+    {
+     "path": "pkg/cmd/agent-task/shared/testdata/log-1-want.txt",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/agent-task/shared/testdata/log-2-want.txt",
+     "additions": 5,
+     "deletions": 6
+    },
+    {
+     "path": "pkg/cmd/extension/browse/model.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/pr/view/view_test.go",
+     "additions": 27,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/status/status.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/status/status_test.go",
+     "additions": 33,
+     "deletions": 27
+    },
+    {
+     "path": "pkg/markdown/markdown.go",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14450,
+   "title": "Refreshable tokens (1/7): foundation credential model, storage migration, and file lock",
+   "body": "<!-- Part of the refreshable-token stack: see the envelope issue #14449. -->\n<!-- Stack position 1 of 7. Base: trunk. This is the bottom of the stack. -->\n<!-- DETAILED variant of pr1-foundation.md. Same PR, fuller rationale. -->\n\nPart of #14449.\n\n### Description\n\nFoundation for refreshable (short-lived) OAuth tokens. This PR carries no user-facing behavior; it prepares the ground so the later PRs can add the refresh machinery without re-threading call sites or churning unrelated code.\n\nIt does three things:\n\n1. Introduces a single `gh.Credential` type and migrates the auth storage interface (and its callers) to speak that type instead of a bare token string.\n2. Bumps `cli/go-gh` and `cli/oauth` to pick up the refreshable-credential support this feature builds on.\n3. Adds a blocking, timeout-bounded file-lock acquisition to `internal/flock`, used later to serialize single-use refresh-token exchanges across processes.\n\n### How did you test this change?\n\nThis feature is verified end to e",
+   "url": "https://github.com/cli/cli/pull/14450",
+   "author": {
+    "login": "babakks",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "trunk",
+   "created_at": "2026-09-15T01:28:41Z",
+   "merged_at": "2026-10-21T09:34:05Z",
+   "merge_commit": "ad4a6456e16c09623a0867a175a2cf83f1afc88e",
+   "commits": [
+    {
+     "oid": "49d1506dbc67ecbd8f43103208d6566c5858a7aa",
+     "authored_date": "2026-09-14T10:05:49Z"
+    },
+    {
+     "oid": "d55e1d4685e4fb5c3123c168c10b600c8cd8c84d",
+     "authored_date": "2026-09-14T10:31:20Z"
+    },
+    {
+     "oid": "bb793c5db983a099bbc55e12b87043676258a3e3",
+     "authored_date": "2026-09-14T10:31:28Z"
+    },
+    {
+     "oid": "2761962e6aefc7436f2cf947958bead70e60cb87",
+     "authored_date": "2026-09-14T10:31:33Z"
+    },
+    {
+     "oid": "a6435ab5c852bd86dc2d7d5f5367dc5f65930627",
+     "authored_date": "2026-10-02T12:59:25Z"
+    },
+    {
+     "oid": "07c63c05e44d151560e29ca0f16b4d573057e128",
+     "authored_date": "2026-10-21T09:07:43Z"
+    },
+    {
+     "oid": "f2ef40d80d0e0c7e02460d33d7325364129d86a1",
+     "authored_date": "2026-10-21T09:13:36Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": ".gitignore",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "api/http_client.go",
+     "additions": 4,
+     "deletions": 3
+    },
+    {
+     "path": "api/http_client_test.go",
+     "additions": 3,
+     "deletions": 2
+    },
+    {
+     "path": "go.mod",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "go.sum",
+     "additions": 2,
+     "deletions": 4
+    },
+    {
+     "path": "internal/attachments/client_test.go",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "internal/authflow/flow.go",
+     "additions": 3,
+     "deletions": 2
+    },
+    {
+     "path": "internal/config/auth_config_test.go",
+     "additions": 27,
+     "deletions": 14
+    },
+    {
+     "path": "internal/config/config.go",
+     "additions": 34,
+     "deletions": 29
+    },
+    {
+     "path": "internal/flock/flock.go",
+     "additions": 38,
+     "deletions": 1
+    },
+    {
+     "path": "internal/flock/flock_test.go",
+     "additions": 61,
+     "deletions": 0
+    },
+    {
+     "path": "internal/gh/gh.go",
+     "additions": 52,
+     "deletions": 5
+    },
+    {
+     "path": "internal/ghcmd/cmd.go",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/agent-task/agent_task.go",
+     "additions": 4,
+     "deletions": 3
+    },
+    {
+     "path": "pkg/cmd/agent-task/shared/capi.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/auth/gitcredential/helper.go",
+     "additions": 6,
+     "deletions": 3
+    },
+    {
+     "path": "pkg/cmd/auth/gitcredential/helper_test.go",
+     "additions": 3,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/auth/logout/logout_test.go",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/auth/refresh/refresh.go",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/auth/refresh/refresh_test.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/auth/shared/writeable.go",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/auth/status/status.go",
+     "additions": 4,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/auth/token/token.go",
+     "additions": 3,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/config/get/get.go",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14451,
+   "title": "Refreshable tokens (2/7): refresher domain, OAuth refresher, storage, and wiring",
+   "body": "<!-- Part of the refreshable-token stack: see the envelope issue #14449. -->\n<!-- Stack position 2 of 7. Base: babakks/refresh-token-a-foundation (PR 1). -->\n<!-- DETAILED variant of pr2-domain.md. Same PR, fuller rationale. -->\n\nPart of #14449. Based on #14450 (foundation).\n\n### Description\n\nThe domain and orchestration layer for refreshable tokens: the machinery that acquires, stores, and refreshes a short-lived credential, and the factory wiring that injects the refresher. It is still not reachable by a user, because nothing yet requests a refreshable token (that arrives with `--short-lived` in PR 3), so on its own this PR changes no observable behavior.\n\nIt introduces, bottom to top:\n\n1. Refreshable credential types and a `TokenRefresher` interface (plus its generated mock).\n2. An OAuth token refresher in `internal/authflow` that exchanges a refresh token for a new credential.\n3. Refreshable credential storage in `internal/config`, persisted only in the per-user slot.\n4. Integratio",
+   "url": "https://github.com/cli/cli/pull/14451",
+   "author": {
+    "login": "babakks",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "trunk",
+   "created_at": "2026-09-15T01:28:43Z",
+   "merged_at": "2026-10-21T09:46:01Z",
+   "merge_commit": "4f168ce66da877f231bb30958e1e970b95885953",
+   "commits": [
+    {
+     "oid": "9f48d0f777cd67e19401981af26ce8742306bdc7",
+     "authored_date": "2026-09-14T11:48:52Z"
+    },
+    {
+     "oid": "e8497912a9a87226d6fcbceeaf7f13cf854a8282",
+     "authored_date": "2026-09-14T11:49:02Z"
+    },
+    {
+     "oid": "065791e50536b54e988c051070067331f1a3b785",
+     "authored_date": "2026-09-14T11:49:03Z"
+    },
+    {
+     "oid": "b40b3a8753512df92e6023b7cf2263187f0106a6",
+     "authored_date": "2026-09-14T11:49:03Z"
+    },
+    {
+     "oid": "eda6b8e164c546ceb608b675e6da181345ea25d5",
+     "authored_date": "2026-09-14T11:49:13Z"
+    },
+    {
+     "oid": "e7e04a622717bff31bac3c990acfae222449fae3",
+     "authored_date": "2026-09-14T11:49:14Z"
+    },
+    {
+     "oid": "b593e2156abaf47e9d52e7f64566e0bffe051f1a",
+     "authored_date": "2026-09-14T11:49:14Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "api/http_client.go",
+     "additions": 20,
+     "deletions": 13
+    },
+    {
+     "path": "api/http_client_test.go",
+     "additions": 36,
+     "deletions": 2
+    },
+    {
+     "path": "internal/attachments/client_test.go",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "internal/authflow/flow.go",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "internal/authflow/refresh.go",
+     "additions": 101,
+     "deletions": 0
+    },
+    {
+     "path": "internal/authflow/refresh_test.go",
+     "additions": 126,
+     "deletions": 0
+    },
+    {
+     "path": "internal/config/auth_config_test.go",
+     "additions": 49,
+     "deletions": 41
+    },
+    {
+     "path": "internal/config/config.go",
+     "additions": 129,
+     "deletions": 38
+    },
+    {
+     "path": "internal/config/migrate_test.go",
+     "additions": 6,
+     "deletions": 6
+    },
+    {
+     "path": "internal/config/refreshable.go",
+     "additions": 576,
+     "deletions": 0
+    },
+    {
+     "path": "internal/config/refreshable_test.go",
+     "additions": 757,
+     "deletions": 0
+    },
+    {
+     "path": "internal/config/test.go",
+     "additions": 28,
+     "deletions": 2
+    },
+    {
+     "path": "internal/gh/gh.go",
+     "additions": 70,
+     "deletions": 0
+    },
+    {
+     "path": "internal/gh/mock/token_refresher.go",
+     "additions": 83,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/factory/default.go",
+     "additions": 54,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/factory/default_test.go",
+     "additions": 105,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14672,
+   "title": "Refreshable tokens: add `prefer_expiring_credentials` config option",
+   "body": "### Description\n\nThis PR sits on top of #14665 in the refreshable-token stack. It lets a user make expiring credentials the default without passing `--expiring` on every `gh auth login` and `gh auth refresh`, by adding a `prefer_expiring_credentials` configuration option.\n\nExpiring credentials are OAuth tokens the server issues with a short expiry that gh refreshes automatically on the user's behalf. Until now the only way to prefer them was the `--expiring` flag, which has to be repeated on each login and refresh. A user who always wants expiring credentials had no way to say so once.\n\nThe work lands in two commits:\n\n- **`refactor(auth): make --expiring a tri-state *bool flag`** changes `--expiring` on `login` and `refresh` from a plain `bool` to a `*bool` via `cmdutil.NilBoolFlag`. This distinguishes three states that a plain bool collapses into two: flag set to true, flag set to false, and flag unset. An unset flag still behaves exactly as before (no expiring token requested), so th",
+   "url": "https://github.com/cli/cli/pull/14672",
+   "author": {
+    "login": "babakks",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "trunk",
+   "created_at": "2026-10-13T21:35:55Z",
+   "merged_at": "2026-10-21T11:18:34Z",
+   "merge_commit": "56682b6faff1646a02246f0ed3ce56f8bcc78c18",
+   "commits": [
+    {
+     "oid": "00334d5e81fdd7b3de5cc942e6fb44376812925a",
+     "authored_date": "2026-10-13T21:19:35Z"
+    },
+    {
+     "oid": "6897f68d238cc1ccfc0f1a849207071b8d3fbdbb",
+     "authored_date": "2026-10-13T21:20:24Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "internal/config/config.go",
+     "additions": 17,
+     "deletions": 0
+    },
+    {
+     "path": "internal/config/test.go",
+     "additions": 3,
+     "deletions": 0
+    },
+    {
+     "path": "internal/gh/gh.go",
+     "additions": 2,
+     "deletions": 0
+    },
+    {
+     "path": "internal/gh/mock/config.go",
+     "additions": 65,
+     "deletions": 21
+    },
+    {
+     "path": "pkg/cmd/auth/login/login.go",
+     "additions": 13,
+     "deletions": 4
+    },
+    {
+     "path": "pkg/cmd/auth/login/login_test.go",
+     "additions": 109,
+     "deletions": 9
+    },
+    {
+     "path": "pkg/cmd/auth/refresh/refresh.go",
+     "additions": 11,
+     "deletions": 6
+    },
+    {
+     "path": "pkg/cmd/auth/refresh/refresh_test.go",
+     "additions": 58,
+     "deletions": 2
+    },
+    {
+     "path": "pkg/cmd/auth/shared/login_flow.go",
+     "additions": 13,
+     "deletions": 3
+    },
+    {
+     "path": "pkg/cmd/auth/shared/login_flow_test.go",
+     "additions": 58,
+     "deletions": 4
+    },
+    {
+     "path": "pkg/cmd/config/list/list_test.go",
+     "additions": 1,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14673,
+   "title": "Refreshable tokens: capture `auth_invocation` telemetry on `login` and `refresh`",
+   "body": "Part of the refreshable tokens work (epic github/gh-cli-and-desktop#349). Stacked on top of https://github.com/cli/cli/pull/14672.\n\n### Description\n\nAll `auth` subcommands are excluded from telemetry, so today we have no signal about how people authenticate. As we roll out refreshable (expiring) credentials, we want to understand the environment `gh auth login` and `gh auth refresh` run in: whether an expiring credential was requested and whether one was received, whether gh is the configured git credential helper, which git protocol is in use, where the credential is stored, and how the sign-in ended.\n\nThis change records a dedicated `auth_invocation` event from the `login` and `refresh` code paths. Every other auth subcommand (`status`, `logout`, `token`, `switch`, `setup-git`, `gitcredential`) stays excluded. Importantly, `login` and `refresh` do **not** emit the generic `command_invocation` event either: the whole auth subtree is suppressed with `DisableTelemetryForSubcommands`, an",
+   "url": "https://github.com/cli/cli/pull/14673",
+   "author": {
+    "login": "babakks",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "trunk",
+   "created_at": "2026-10-13T22:54:02Z",
+   "merged_at": "2026-10-21T11:34:57Z",
+   "merge_commit": "abf0e0c25ae01573738adc9e9c59407b857f49b0",
+   "commits": [
+    {
+     "oid": "46c342f57d879d22f16e9e8048e05f1f9d1b0898",
+     "authored_date": "2026-10-15T10:29:06Z"
+    },
+    {
+     "oid": "5f278b0b29350ee8ae222b74e097873c0300d80c",
+     "authored_date": "2026-10-16T10:29:47Z"
+    },
+    {
+     "oid": "e1100dca6430c6e0908bfbfd700d16861a99118e",
+     "authored_date": "2026-10-16T10:57:02Z"
+    },
+    {
+     "oid": "04528169484c82dfa6f6358a08945b7e3743e70b",
+     "authored_date": "2026-10-16T12:48:31Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "pkg/cmd/auth/auth.go",
+     "additions": 7,
+     "deletions": 3
+    },
+    {
+     "path": "pkg/cmd/auth/login/login.go",
+     "additions": 24,
+     "deletions": 6
+    },
+    {
+     "path": "pkg/cmd/auth/login/login_test.go",
+     "additions": 12,
+     "deletions": 21
+    },
+    {
+     "path": "pkg/cmd/auth/refresh/refresh.go",
+     "additions": 51,
+     "deletions": 8
+    },
+    {
+     "path": "pkg/cmd/auth/refresh/refresh_test.go",
+     "additions": 99,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/auth/shared/git_credential.go",
+     "additions": 123,
+     "deletions": 9
+    },
+    {
+     "path": "pkg/cmd/auth/shared/git_credential_test.go",
+     "additions": 187,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/auth/shared/login_flow.go",
+     "additions": 38,
+     "deletions": 1
+    },
+    {
+     "path": "pkg/cmd/auth/shared/login_flow_test.go",
+     "additions": 163,
+     "deletions": 3
+    },
+    {
+     "path": "pkg/cmd/auth/shared/telemetry.go",
+     "additions": 104,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/auth/shared/telemetry_test.go",
+     "additions": 118,
+     "deletions": 0
+    },
+    {
+     "path": "pkg/cmd/root/root.go",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14801,
+   "title": "Replace msgpack with a minimal node ID encoder",
+   "body": "<!-- List related issues here. Use `fixes` or `closes` keywords to associate an issue number. -->\n\n#14800\n\n### Description\n\ngh depends on `github.com/vmihailenco/msgpack/v5` v5.4.1, which is flagged for CVE-2026-2454. The upstream module has had no commits since 2023, so a patched release is unlikely.\n\ngh uses msgpack in exactly two places, and only to encode GraphQL node IDs: `PR_` and `U_` IDs in `pkg/cmd/agent-task/capi`, and `DC_` IDs in `pkg/cmd/discussion/client`. Each call encodes a short array of positive ints with compact integer encoding and base64-encodes the result. `api.EncodeNodeID` does the same encoding in about 20 lines, both call sites use it, and the module is gone from `go.mod`.\n\n### How did you test this change?\n\nI built `gh` from this branch and ran:\n\n```\ngh discussion view 2618 --repo cli/cli --comments\n```\n\nThe output included the first comment on that discussion, linked as https://github.com/cli/cli/discussions/2618#discussioncomment-205837, with its body rende",
+   "url": "https://github.com/cli/cli/pull/14801",
+   "author": {
+    "login": "tj-smith47",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "trunk",
+   "created_at": "2026-10-23T17:06:12Z",
+   "merged_at": "2026-10-27T10:12:22Z",
+   "merge_commit": "0186b810be23edeacfb50d4a43012b96c7df1d35",
+   "commits": [
+    {
+     "oid": "80256c3312f60dc13aee2b0a290df599705d3319",
+     "authored_date": "2026-10-23T17:01:59Z"
+    },
+    {
+     "oid": "6eb83b0ea928ca65df9f9397cd55acfb4983d74d",
+     "authored_date": "2026-10-27T09:42:09Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "api/node_id.go",
+     "additions": 38,
+     "deletions": 0
+    },
+    {
+     "path": "api/node_id_test.go",
+     "additions": 38,
+     "deletions": 0
+    },
+    {
+     "path": "go.mod",
+     "additions": 0,
+     "deletions": 2
+    },
+    {
+     "path": "go.sum",
+     "additions": 0,
+     "deletions": 4
+    },
+    {
+     "path": "pkg/cmd/agent-task/capi/sessions.go",
+     "additions": 2,
+     "deletions": 29
+    },
+    {
+     "path": "pkg/cmd/discussion/client/client.go",
+     "additions": 1,
+     "deletions": 15
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14824,
+   "title": "chore(deps): Bump the codeql-actions group with 3 updates",
+   "body": "Bumps the codeql-actions group with 3 updates: [github/codeql-action/init](https://github.com/github/codeql-action), [github/codeql-action/analyze](https://github.com/github/codeql-action) and [github/codeql-action/upload-sarif](https://github.com/github/codeql-action).\n\nUpdates `github/codeql-action/init` from 4.39.0 to 4.39.1\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/github/codeql-action/releases\">github/codeql-action/init's releases</a>.</em></p>\n<blockquote>\n<h2>v4.39.1</h2>\n<ul>\n<li>Update default CodeQL bundle version to <a href=\"https://github.com/github/codeql-action/releases/tag/codeql-bundle-v2.27.3\">2.27.3</a>. <a href=\"https://redirect.github.com/github/codeql-action/pull/4256\">#4256</a></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a href=\"https://github.com/github/codeql-action/blob/main/CHANGELOG.md\">github/codeql-action/init's changelog</a>.</em></p>\n<blockquote>\n<h1>CodeQ",
+   "url": "https://github.com/cli/cli/pull/14824",
+   "author": {
+    "login": "dependabot",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "trunk",
+   "created_at": "2026-10-26T14:06:17Z",
+   "merged_at": "2026-10-27T10:19:44Z",
+   "merge_commit": "9be5608274eca527fbdf54020ead268ff605bad3",
+   "commits": [
+    {
+     "oid": "ca436970d50f6afb3101f470c37bf12a22cbf016",
+     "authored_date": "2026-10-26T14:06:12Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": ".github/workflows/codeql.yml",
+     "additions": 3,
+     "deletions": 3
+    },
+    {
+     "path": ".github/workflows/govulncheck.yml",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 14878,
+   "title": "chore(deps): Bump google.golang.org/grpc from 1.84.0 to 1.85.0",
+   "body": "Bumps [google.golang.org/grpc](https://github.com/grpc/grpc-go) from 1.84.0 to 1.85.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/grpc/grpc-go/releases\">google.golang.org/grpc's releases</a>.</em></p>\n<blockquote>\n<h2>Release 1.85.0</h2>\n<h1>New Features</h1>\n<ul>\n<li>stats: Expose the effective client authority (sent on the wire as the HTTP/2 <code>:authority</code> header) in client <code>stats.OutHeader</code> events. (<a href=\"https://redirect.github.com/grpc/grpc-go/issues/9296\">#9296</a>)\n<ul>\n<li>Special Thanks: <a href=\"https://github.com/aryansk\"><code>@\u200baryansk</code></a></li>\n</ul>\n</li>\n<li>metadata: Add <code>ValueFromOutgoingContext</code>, which reads a single metadata value from outgoing context without copying the entire outgoing metadata into a new map. (<a href=\"https://redirect.github.com/grpc/grpc-go/issues/9282\">#9282</a>)\n<ul>\n<li>Special Thanks: <a href=\"https://github.com/yuyangguo42\"><code>@\u200byuyangguo42</code></a",
+   "url": "https://github.com/cli/cli/pull/14878",
+   "author": {
+    "login": "dependabot",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "trunk",
+   "created_at": "2026-10-30T14:03:08Z",
+   "merged_at": "2026-10-30T14:30:30Z",
+   "merge_commit": "30eb70ca63a800733d9b802cc69862579478b0c3",
+   "commits": [
+    {
+     "oid": "0c5e7e910fe9d09586dc3fdbc3fe9d981a081812",
+     "authored_date": "2026-10-30T14:03:04Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "go.mod",
+     "additions": 6,
+     "deletions": 6
+    },
+    {
+     "path": "go.sum",
+     "additions": 18,
+     "deletions": 18
+    }
+   ],
+   "files_truncated": false
+  }
+ ]
+}

@@ -4,8 +4,7 @@ Work not yet decided. **Not read by the agent or the scripts.** Items move into 
 
 ## Decided, not yet done
 
-- **Agent recommends noise patterns.** The compute script lists the files with the most lines changed. The agent proposes noise patterns with a reason for each. The user approves, then the agent updates the config. Found by the first data pull: the default patterns missed a generated parser file.
-- **Remove the author-type split** (METRICS.md rule 3.5). In company repos almost every author is a company member, so it adds nothing.
+- **Agent recommends noise patterns.** Data side done: `metrics.py` lists the 15 files with the most lines changed, and whether each is already treated as noise. Still to do: the agent instruction to review that list, propose patterns with a reason for each, and update the config after the user approves.
 
 ## Metrics to define
 

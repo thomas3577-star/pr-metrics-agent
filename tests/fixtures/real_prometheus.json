@@ -1,0 +1,1227 @@
+{
+ "meta": {
+  "tool_version": "1.0",
+  "repo": "prometheus/prometheus",
+  "default_branch": "main",
+  "branches": [
+   "main"
+  ],
+  "run_at": "2026-11-14T07:32:29Z",
+  "windows": {
+   "current": {
+    "start": "2026-10-31T07:32:29Z",
+    "end": "2026-11-14T07:32:29Z"
+   },
+   "previous": {
+    "start": "2026-10-17T07:32:29Z",
+    "end": "2026-10-31T07:32:29Z"
+   },
+   "cfr_eval": {
+    "start": "2026-10-17T07:32:29Z",
+    "end": "2026-10-31T07:32:29Z"
+   }
+  },
+  "fetch_range": {
+   "start": "2026-10-17T07:32:29Z",
+   "end": "2026-11-14T07:32:29Z"
+  },
+  "config": {
+   "window_days": 14,
+   "revert_window_days": 14
+  }
+ },
+ "reconciliation": {
+  "status": "ok",
+  "slices": []
+ },
+ "prs": [
+  {
+   "number": 19973,
+   "title": "promql: preserve quantile bucket for histograms with NaN sum",
+   "body": "When a native histogram's sum is NaN, `HistogramQuantile` scans the remaining buckets to determine whether to report NaN observations. That scan overwrote the selected bucket, causing interpolation to use the last bucket instead. Preserve the selected bucket while accumulating the remaining counts.\r\n\r\nFor observations `{1.5, 3, NaN}`, `histogram_quantile(0.2, \u2026)` returned approximately `3.0314` instead of `1.5157`.\r\n\r\nRegression tests cover multiple populated buckets, native histograms with custom buckets, classic histogram controls, and corresponding `histogram_fraction` evaluations. The `-Inf`/`+Inf` case is covered using schema `-4`.\r\n\r\nFive regression evaluations fail without the fix; the remaining controls pass either way.\r\n\r\nValidation: focused PromQL tests, lint, race-enabled Go tests, generated parser check, and UI tests/lint passed.\r\n\r\n#### Which issue(s) does the PR fix:\r\n\r\nNone.\r\n\r\n\r\n```release-notes\r\n[BUGFIX] PromQL: Fix histogram_quantile and histogram_quantiles interpolat",
+   "url": "https://github.com/prometheus/prometheus/pull/19973",
+   "author": {
+    "login": "bhabishnu",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2026-10-07T15:29:36Z",
+   "merged_at": "2026-10-16T06:38:12Z",
+   "merge_commit": "d1fbd814cd77030c2d8428bc485d23c252484b13",
+   "commits": [
+    {
+     "oid": "bfcc52f2fe1dce9f00d7fc3d06a3f88a373119ce",
+     "authored_date": "2026-10-07T11:13:26Z"
+    },
+    {
+     "oid": "e4918b54a65c1b6858ef351dfe37b0f6348dd8f0",
+     "authored_date": "2026-10-15T03:27:04Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "promql/promqltest/testdata/native_histograms.test",
+     "additions": 137,
+     "deletions": 0
+    },
+    {
+     "path": "promql/quantile.go",
+     "additions": 2,
+     "deletions": 2
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 20029,
+   "title": "otlp: sort exemplars by timestamp before appending",
+   "body": "The OTLP endpoint passed each data point's exemplars to the appender in the order they arrived. `AppenderV2` requires them sorted by timestamp, and the TSDB drops an exemplar that's older than one already appended for the same series, unless it's within the out-of-order time window. So when a data point carried an exemplar after a newer one, the older exemplar was dropped on commit.\n\nThis PR sorts each series' exemplars by timestamp before appending. Classic histogram buckets get their exemplars as before, and each bucket's exemplars are sorted.\n\n#### Release notes for end users (**ALL** commits must be considered).\n\n```release-notes\n[BUGFIX] OTLP: Stop dropping exemplars that arrive out of timestamp order within a data point.\n```\n",
+   "url": "https://github.com/prometheus/prometheus/pull/20029",
+   "author": {
+    "login": "aknuds1",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2026-10-15T12:25:59Z",
+   "merged_at": "2026-10-16T06:40:16Z",
+   "merge_commit": "8750eb5462d4c161dbe288428e92742efb526247",
+   "commits": [
+    {
+     "oid": "f037757cec7557440d124f096d3a1ebb17863358",
+     "authored_date": "2026-10-15T12:25:24Z"
+    },
+    {
+     "oid": "a1d1ab6f33e74321b1b272bff1c9ec017a25ab55",
+     "authored_date": "2026-10-15T16:04:32Z"
+    },
+    {
+     "oid": "f5ced70a9b0ec53d0c5b6f65554f42bf934081f3",
+     "authored_date": "2026-10-15T19:27:42Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "storage/remote/otlptranslator/prometheusremotewrite/helper.go",
+     "additions": 3,
+     "deletions": 0
+    },
+    {
+     "path": "storage/remote/otlptranslator/prometheusremotewrite/helper_test.go",
+     "additions": 66,
+     "deletions": 0
+    },
+    {
+     "path": "storage/remote/otlptranslator/prometheusremotewrite/histograms.go",
+     "additions": 6,
+     "deletions": 0
+    },
+    {
+     "path": "storage/remote/otlptranslator/prometheusremotewrite/histograms_test.go",
+     "additions": 104,
+     "deletions": 0
+    },
+    {
+     "path": "storage/remote/otlptranslator/prometheusremotewrite/number_data_points.go",
+     "additions": 4,
+     "deletions": 0
+    },
+    {
+     "path": "storage/remote/otlptranslator/prometheusremotewrite/number_data_points_test.go",
+     "additions": 39,
+     "deletions": 0
+    },
+    {
+     "path": "storage/remote/write_otlp_handler_test.go",
+     "additions": 50,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 19877,
+   "title": "mixin: fix PrometheusRemoteStorageFailures denominator double-counting",
+   "body": "### Which issue(s) does the PR fix:\r\nRelated to #19870\r\n\r\n### What does this PR do?\r\nFixes a double-counting bug in the `PrometheusRemoteStorageFailures` alert denominator in `alerts.libsonnet`.\r\n\r\nPreviously, the fallback denominator expression evaluated to `(samples_failed_total + samples_total)`. Because `samples_total` already accounts for all sample send attempts (including those that fail), adding `samples_failed_total` resulted in double-counting failures (e.g., an all-failed batch with 0 retries yielded a 50% failure rate instead of 100%).\r\n\r\nThis PR updates the denominator logic to:\r\n\r\n```promql\r\n(\r\n  (rate(prometheus_remote_storage_failed_samples_total{%(prometheusSelector)s}[5m]) + rate(prometheus_remote_storage_succeeded_samples_total{%(prometheusSelector)s}[5m]))\r\n  or\r\n  rate(prometheus_remote_storage_samples_total{%(prometheusSelector)s}[5m])\r\n)\r\n```\r\n\r\nThis correctly computes `(failed + succeeded)` when legacy counters are present, and falls back to `samples_total` dire",
+   "url": "https://github.com/prometheus/prometheus/pull/19877",
+   "author": {
+    "login": "nikhilsaxena04",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2026-09-30T12:24:37Z",
+   "merged_at": "2026-10-16T07:26:57Z",
+   "merge_commit": "1ef2a2952c2f8f17ac724ae36ce082aab513e895",
+   "commits": [
+    {
+     "oid": "939422a5111875c48b6a71fd66343302c1251174",
+     "authored_date": "2026-10-01T18:16:05Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "documentation/prometheus-mixin/alerts.libsonnet",
+     "additions": 3,
+     "deletions": 3
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 19954,
+   "title": "chore(deps): update dependency prettier to v3.9.10",
+   "body": "This PR contains the following updates:\n\n| Package | Change | [Age](https://docs.renovatebot.com/merge-confidence/) | [Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [prettier](https://prettier.io) ([source](https://redirect.github.com/prettier/prettier)) | [`3.9.8` \u2192 `3.9.10`](https://renovatebot.com/diffs/npm/prettier/3.9.8/3.9.10) | ![age](https://developer.mend.io/api/mc/badges/age/npm/prettier/3.9.10?slim=true) | ![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/prettier/3.9.8/3.9.10?slim=true) |\n\n```release-notes\n\nNONE\n\n```\n\n---\n\n### Release Notes\n\n<details>\n<summary>prettier/prettier (prettier)</summary>\n\n### [`v3.9.10`](https://redirect.github.com/prettier/prettier/blob/HEAD/CHANGELOG.md#3910)\n\n[Compare Source](https://redirect.github.com/prettier/prettier/compare/3.9.9...3.9.10)\n\n[diff](https://redirect.github.com/prettier/prettier/compare/3.9.9...3.9.10)\n\n##### Markdown: Update `micromark-extension-gfm-table` to fix the ta",
+   "url": "https://github.com/prometheus/prometheus/pull/19954",
+   "author": {
+    "login": "renovate",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2026-10-07T04:26:22Z",
+   "merged_at": "2026-10-16T16:50:12Z",
+   "merge_commit": "930ee31a6ea0cddaf1875cda185e46438ecfa906",
+   "commits": [
+    {
+     "oid": "702a9c40073c33f5d119b3c7d9b26771360a7ac6",
+     "authored_date": "2026-10-13T11:20:14Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "web/ui/pnpm-lock.yaml",
+     "additions": 7,
+     "deletions": 7
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 19949,
+   "title": "fix(deps): update google.golang.org/genproto/googleapis/api digest to 4341edf",
+   "body": "This PR contains the following updates:\n\n| Package | Type | Update | Change |\n|---|---|---|---|\n| [google.golang.org/genproto/googleapis/api](https://redirect.github.com/googleapis/go-genproto) | require | digest | `b142276` \u2192 `4341edf` |\n\n```release-notes\n\nNONE\n\n```\n\n---\n\n### Configuration\n\n\ud83d\udcc5 **Schedule**: (in timezone UTC)\n\n- Branch creation\n  - On day 7 and 21 of the month (`* * 7,21 * *`)\n- Automerge\n  - At any time (no schedule defined)\n\n\ud83d\udea6 **Automerge**: Disabled by config. Please merge this manually once you are satisfied.\n\n\u267b **Rebasing**: Whenever PR becomes conflicted, or you tick the rebase/retry checkbox.\n\n\ud83d\udd15 **Ignore**: Close this PR and you won't be reminded about this update again.\n\n---\n\n - [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check this box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/). View the [repository job log](https://developer.mend.io/github/prometheus/prometheus).\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0NC4xMz",
+   "url": "https://github.com/prometheus/prometheus/pull/19949",
+   "author": {
+    "login": "renovate",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2026-10-07T00:24:14Z",
+   "merged_at": "2026-10-16T17:34:46Z",
+   "merge_commit": "93f088d90a29ef51e268d35569c5506cfa270dd6",
+   "commits": [
+    {
+     "oid": "0797b9a28658c443d74db3f8bbccdc59c99dc8f1",
+     "authored_date": "2026-10-13T00:25:10Z"
+    },
+    {
+     "oid": "6ffa7636eb8bcaec5cc3087c0ff9d26668cea76b",
+     "authored_date": "2026-10-16T13:51:18Z"
+    },
+    {
+     "oid": "50ddf47a1198294a3475870dabcd656c303374a0",
+     "authored_date": "2026-10-16T13:52:53Z"
+    },
+    {
+     "oid": "bd53d7fce15d28dcfe8fbad9d16a7a556267869a",
+     "authored_date": "2026-10-16T16:21:32Z"
+    },
+    {
+     "oid": "eb60efcf7349a95ffecdeb9d17cf62fff726d430",
+     "authored_date": "2026-10-16T16:23:27Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "documentation/examples/remote_storage/go.mod",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "documentation/examples/remote_storage/go.sum",
+     "additions": 4,
+     "deletions": 4
+    },
+    {
+     "path": "go.mod",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "go.sum",
+     "additions": 4,
+     "deletions": 4
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 19959,
+   "title": "Update Mantine UI",
+   "body": "> [!NOTE]\n> This PR body was truncated due to platform limits.\n\nThis PR contains the following updates:\n\n| Package | Change | [Age](https://docs.renovatebot.com/merge-confidence/) | [Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| @&#8203;codemirror/language | [`6.12.4` \u2192 `6.13.1`](https://renovatebot.com/diffs/npm/@codemirror%2flanguage/6.12.4/6.13.1) | ![age](https://developer.mend.io/api/mc/badges/age/npm/@codemirror%2flanguage/6.13.1?slim=true) | ![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/@codemirror%2flanguage/6.12.4/6.13.1?slim=true) |\n| @&#8203;codemirror/state | [`6.7.5` \u2192 `6.7.6`](https://renovatebot.com/diffs/npm/@codemirror%2fstate/6.7.5/6.7.6) | ![age](https://developer.mend.io/api/mc/badges/age/npm/@codemirror%2fstate/6.7.6?slim=true) | ![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/@codemirror%2fstate/6.7.5/6.7.6?slim=true) |\n| @&#8203;codemirror/view | [`6.43.12` \u2192 `6.43.14`](https://renova",
+   "url": "https://github.com/prometheus/prometheus/pull/19959",
+   "author": {
+    "login": "renovate",
+    "type": "Bot"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2026-10-07T05:49:07Z",
+   "merged_at": "2026-10-19T14:16:27Z",
+   "merge_commit": "ab4e1474ef9dfafd83b3b0a3a7ddecc0e2cba5d9",
+   "commits": [
+    {
+     "oid": "7f16370fcb5ba6b3b206db850e5547396afd57ee",
+     "authored_date": "2026-10-18T18:33:48Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "web/ui/pnpm-lock.yaml",
+     "additions": 545,
+     "deletions": 585
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 19684,
+   "title": "agent: support metadata-wal-records in agent mode",
+   "body": "#### Which issue(s) does the PR fix:\n\nNone\n\n#### Overview / Description:\n\nThis PR adds support for the `--enable-feature=metadata-wal-records` feature flag in Prometheus Agent mode.\n\nWhen enabled:\n- **Ingestion**: Both `Appender.UpdateMetadata` and `AppenderV2.Append` (with metadata options) record `record.Metadata` entries to the Agent WAL and update in-memory series metadata on commit. Redundant metadata updates are deduplicated, and rollbacks discard pending metadata changes.\n- **In-Memory Tracking**: `memSeries` and `seriesSnapshot` store series metadata and expose `Metadata() *metadata.Metadata`.\n- **Checkpointing**: In-memory checkpointing (`agent.Checkpoint`) preserves series metadata as `record.Metadata` records in checkpoints, matching `wlog.Checkpoint`.\n- **WAL Replay**: During WAL replay, `record.Metadata` records are decoded and mapped to their respective series.\n\n#### Release notes for end users (**ALL** commits must be considered).\n*Reviewers should verify clarity and qua",
+   "url": "https://github.com/prometheus/prometheus/pull/19684",
+   "author": {
+    "login": "bwplotka",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "main",
+   "created_at": "2026-09-11T12:11:42Z",
+   "merged_at": "2026-10-20T06:11:51Z",
+   "merge_commit": "44bd2fe29ce6dc5c50913751a24fb0089ef26f3e",
+   "commits": [
+    {
+     "oid": "10f8bd77bf69ea5d4d31b1fbda7b6d7d73388e9a",
+     "authored_date": "2026-10-19T12:04:22Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "cmd/prometheus/features_test.go",
+     "additions": 1,
+     "deletions": 0
+    },
+    {
+     "path": "cmd/prometheus/main.go",
+     "additions": 4,
+     "deletions": 0
+    },
+    {
+     "path": "docs/feature_flags.md",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "tsdb/agent/checkpoint.go",
+     "additions": 70,
+     "deletions": 6
+    },
+    {
+     "path": "tsdb/agent/checkpoint_test.go",
+     "additions": 37,
+     "deletions": 7
+    },
+    {
+     "path": "tsdb/agent/db.go",
+     "additions": 119,
+     "deletions": 6
+    },
+    {
+     "path": "tsdb/agent/db_append_v2.go",
+     "additions": 14,
+     "deletions": 1
+    },
+    {
+     "path": "tsdb/agent/db_append_v2_test.go",
+     "additions": 319,
+     "deletions": 0
+    },
+    {
+     "path": "tsdb/agent/db_test.go",
+     "additions": 378,
+     "deletions": 64
+    },
+    {
+     "path": "tsdb/agent/series.go",
+     "additions": 40,
+     "deletions": 9
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 20080,
+   "title": "storage/remote: stop exposing legacy metadata metrics for RW2",
+   "body": "#### Description\r\n\r\nBased on @bwplotka suggestion:\r\n\r\n> I would deprecate all four metrics for RW2: stop incrementing `metadata_total` in the v2 path, keep them working only for RW1 (`metadata_config.send`), and clarify in their Help texts (and on `bytes_total`) that they are RW1-only and deprecated.\r\n\r\nThis PR:\r\n\r\n- Keeps the four legacy metadata metrics working for RW1.\r\n- Stops registering and incrementing them for RW2.\r\n- Marks them as RW1-only and deprecated in their Help texts.\r\n- Clarifies that `bytes_total` includes metadata for RW2.\r\n\r\n#### Tests\r\n\r\n| Added test case | Verification |\r\n|---|---|\r\n| RW1 metric registration | Verifies that all four legacy metadata metrics are registered |\r\n| RW2 metric registration | Verifies that all four legacy metadata metrics are not registered |\r\n| RW1 metadata counters | Verifies that `metadata_total` and `metadata_bytes_total` are updated after metadata delivery |\r\n\r\n#### Which issue(s) does the PR fix:\r\n\r\nrelated to #19818\r\n\r\n#### Release",
+   "url": "https://github.com/prometheus/prometheus/pull/20080",
+   "author": {
+    "login": "shilohlee98",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "main",
+   "created_at": "2026-10-19T16:57:22Z",
+   "merged_at": "2026-10-20T13:04:45Z",
+   "merge_commit": "b10b7dca65ca226ca7251016059e36179362b7ba",
+   "commits": [
+    {
+     "oid": "89bb13a1f9362998d3cde30f7ee3c558ca7703eb",
+     "authored_date": "2026-10-20T12:37:44Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "storage/remote/queue_manager.go",
+     "additions": 34,
+     "deletions": 34
+    },
+    {
+     "path": "storage/remote/queue_manager_test.go",
+     "additions": 48,
+     "deletions": 18
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 20017,
+   "title": "Update go and npm dependencies",
+   "body": "Asked claude to run `make update-all-go-deps` and then `make update-npm-deps` and then fix any problems.  The fixes are minimal, although it would be nice to have a second set of eyes on the fix in main which seems to be due to an API change.\r\n\r\n```release-notes\r\nNONE\r\n```\r\n",
+   "url": "https://github.com/prometheus/prometheus/pull/20017",
+   "author": {
+    "login": "ywwg",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "main",
+   "created_at": "2026-10-14T14:02:37Z",
+   "merged_at": "2026-10-21T16:55:23Z",
+   "merge_commit": "c070a585b7be208cded6cf2021e338f0b5b5f144",
+   "commits": [
+    {
+     "oid": "309929d9bb510a42556dab6cf1573d678a3f52a1",
+     "authored_date": "2026-10-19T20:29:21Z"
+    },
+    {
+     "oid": "2ec7a0d2532b6f0742587ee1d6e79a0911ad4803",
+     "authored_date": "2026-10-19T21:00:08Z"
+    },
+    {
+     "oid": "917c989ee326c68e46761675ad032af4bbbbfd00",
+     "authored_date": "2026-10-19T21:00:09Z"
+    },
+    {
+     "oid": "329ea190563923e2b5cac761aa04f94cce6c0b42",
+     "authored_date": "2026-10-20T13:50:01Z"
+    },
+    {
+     "oid": "109994c77aeb1993fbba7def5cf54736d3d2e953",
+     "authored_date": "2026-10-20T13:50:01Z"
+    },
+    {
+     "oid": "74edc286dddeac5d86c0cbeb631f0072955d9c4d",
+     "authored_date": "2026-10-20T13:50:02Z"
+    },
+    {
+     "oid": "192261dac714495b60bcd566d1a64837e7d4e615",
+     "authored_date": "2026-10-20T13:51:47Z"
+    },
+    {
+     "oid": "97a3b4b2060cbfdc24502de862104ebb9936c913",
+     "authored_date": "2026-10-20T14:12:51Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "cmd/prometheus/main.go",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "compliance/go.mod",
+     "additions": 5,
+     "deletions": 5
+    },
+    {
+     "path": "compliance/go.sum",
+     "additions": 13,
+     "deletions": 6
+    },
+    {
+     "path": "documentation/examples/remote_storage/go.mod",
+     "additions": 54,
+     "deletions": 53
+    },
+    {
+     "path": "documentation/examples/remote_storage/go.sum",
+     "additions": 200,
+     "deletions": 196
+    },
+    {
+     "path": "go.mod",
+     "additions": 105,
+     "deletions": 103
+    },
+    {
+     "path": "go.sum",
+     "additions": 238,
+     "deletions": 234
+    },
+    {
+     "path": "internal/tools/go.mod",
+     "additions": 40,
+     "deletions": 40
+    },
+    {
+     "path": "internal/tools/go.sum",
+     "additions": 90,
+     "deletions": 88
+    },
+    {
+     "path": "web/api/v1/openapi_helpers.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "web/ui/mantine-ui/package.json",
+     "additions": 42,
+     "deletions": 42
+    },
+    {
+     "path": "web/ui/mantine-ui/src/promql/tools/go.mod",
+     "additions": 22,
+     "deletions": 10
+    },
+    {
+     "path": "web/ui/mantine-ui/src/promql/tools/go.sum",
+     "additions": 110,
+     "deletions": 112
+    },
+    {
+     "path": "web/ui/module/codemirror-promql/package.json",
+     "additions": 16,
+     "deletions": 16
+    },
+    {
+     "path": "web/ui/module/lezer-promql/package.json",
+     "additions": 5,
+     "deletions": 5
+    },
+    {
+     "path": "web/ui/package.json",
+     "additions": 6,
+     "deletions": 6
+    },
+    {
+     "path": "web/ui/pnpm-lock.yaml",
+     "additions": 278,
+     "deletions": 356
+    },
+    {
+     "path": "web/ui/react-app/config-overrides.js",
+     "additions": 1,
+     "deletions": 0
+    },
+    {
+     "path": "web/ui/react-app/jest-resolver.cjs",
+     "additions": 27,
+     "deletions": 0
+    },
+    {
+     "path": "web/ui/react-app/package.json",
+     "additions": 27,
+     "deletions": 27
+    },
+    {
+     "path": "web/ui/react-app/pnpm-lock.yaml",
+     "additions": 1312,
+     "deletions": 1373
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 20109,
+   "title": "scrape: do not use invalid native histograms for start timestamp synthesis",
+   "body": "In the experimental start timestamp synthesis (`st-synthesis`), a scraped histogram became the anchor before the append path validated it. If a target exposed a histogram with an invalid bucket layout, later samples were compared with and subtracted from it. For example, when a later sample had a lower schema, the subtraction panicked in `mustReduceResolution`. The scrape loop does not recover panics, so Prometheus crashed.\r\n\r\nHistograms are now validated before synthesis uses them. Invalid ones are returned unchanged, so they are rejected on append as they are without synthesis, and the anchor and the previous sample stay as they were. When the feature is enabled, this adds one `Validate` call per histogram sample.\r\n\r\nTwo existing tests used integer histograms whose count did not match their buckets, which validation rejects. I added the missing bucket counts. No assertions changed.\r\n\r\nRelated: #20110 makes the histogram operations return an error instead of panicking. The two PRs do ",
+   "url": "https://github.com/prometheus/prometheus/pull/20109",
+   "author": {
+    "login": "zenador",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2026-10-20T22:43:46Z",
+   "merged_at": "2026-10-22T06:41:52Z",
+   "merge_commit": "f02aab2729fb1e6de83567d591a3b1a7b4d615ca",
+   "commits": [
+    {
+     "oid": "430f4ae6cee6a69b3ad40b5824355ffb14437683",
+     "authored_date": "2026-10-20T22:40:59Z"
+    },
+    {
+     "oid": "7bdde00977d9dc1ee512474230f92a28d8022d35",
+     "authored_date": "2026-10-21T17:38:39Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "scrape/scrape_test.go",
+     "additions": 88,
+     "deletions": 0
+    },
+    {
+     "path": "scrape/st_synthesis.go",
+     "additions": 17,
+     "deletions": 0
+    },
+    {
+     "path": "scrape/st_synthesis_test.go",
+     "additions": 115,
+     "deletions": 16
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 19683,
+   "title": "promql: allow unquoted Unicode letters and dots behind a feature flag",
+   "body": "<!--\r\n    - Please give your PR a title in the form \"area: short description\".  For example \"tsdb: reduce disk usage by 95%\"\r\n\r\n    - Please sign CNCF's Developer Certificate of Origin and sign-off your commits by adding the -s / --signoff flag to `git commit`. See https://github.com/apps/dco for more information.\r\n\r\n    - If the PR adds or changes a behaviour or fixes a bug of an exported API it would need a unit/e2e test.\r\n\r\n    - Where possible use only exported APIs for tests to simplify the review and make it as close as possible to an actual library usage.\r\n\r\n    - Performance improvements would need a benchmark test to prove it.\r\n\r\n    - All exposed objects should have a comment.\r\n\r\n    - All comments should start with a capital letter and end with a full stop.\r\n -->\r\n\r\n#### Which issue(s) does the PR fix:\r\n<!--\r\nIf it applies.\r\nAutomatically closes linked issue when PR is merged.\r\nUsage: `Fixes #<issue number>`, or `Fixes (paste link of issue)`.\r\nMore at https://docs.github.com",
+   "url": "https://github.com/prometheus/prometheus/pull/19683",
+   "author": {
+    "login": "roidelapluie",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "main",
+   "created_at": "2026-09-11T12:05:58Z",
+   "merged_at": "2026-10-23T09:01:05Z",
+   "merge_commit": "e2e83df0031afe80e7fac67b7a591e050683e473",
+   "commits": [
+    {
+     "oid": "0583668f1b3e11989b14a896f664026e841cfa48",
+     "authored_date": "2026-09-11T12:03:44Z"
+    },
+    {
+     "oid": "da1f22a0dab3223b2f51d0fd932c4b77f5a36bd3",
+     "authored_date": "2026-10-15T12:43:44Z"
+    },
+    {
+     "oid": "cbbef9fbc802b6d25ac0194f15837ca57e8c52f3",
+     "authored_date": "2026-10-21T09:41:58Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "cmd/prometheus/features_test.go",
+     "additions": 11,
+     "deletions": 0
+    },
+    {
+     "path": "cmd/prometheus/main.go",
+     "additions": 4,
+     "deletions": 1
+    },
+    {
+     "path": "cmd/prometheus/testdata/features.json",
+     "additions": 1,
+     "deletions": 0
+    },
+    {
+     "path": "cmd/promtool/main.go",
+     "additions": 3,
+     "deletions": 1
+    },
+    {
+     "path": "docs/command-line/prometheus.md",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "docs/command-line/promtool.md",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "docs/feature_flags.md",
+     "additions": 18,
+     "deletions": 0
+    },
+    {
+     "path": "docs/querying/basics.md",
+     "additions": 51,
+     "deletions": 0
+    },
+    {
+     "path": "promql/engine_test.go",
+     "additions": 58,
+     "deletions": 0
+    },
+    {
+     "path": "promql/parser/ast.go",
+     "additions": 7,
+     "deletions": 0
+    },
+    {
+     "path": "promql/parser/features.go",
+     "additions": 3,
+     "deletions": 0
+    },
+    {
+     "path": "promql/parser/generated_parser.y",
+     "additions": 2,
+     "deletions": 1
+    },
+    {
+     "path": "promql/parser/generated_parser.y.go",
+     "additions": 2,
+     "deletions": 1
+    },
+    {
+     "path": "promql/parser/lex.go",
+     "additions": 26,
+     "deletions": 6
+    },
+    {
+     "path": "promql/parser/parse.go",
+     "additions": 9,
+     "deletions": 3
+    },
+    {
+     "path": "promql/parser/printer.go",
+     "additions": 27,
+     "deletions": 7
+    },
+    {
+     "path": "promql/parser/unquoted_utf8_test.go",
+     "additions": 185,
+     "deletions": 0
+    },
+    {
+     "path": "promql/promqltest/test.go",
+     "additions": 1,
+     "deletions": 0
+    },
+    {
+     "path": "promql/promqltest/testdata/unquoted_utf8_names.test",
+     "additions": 125,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 20014,
+   "title": "test(tsdb, storage): migrate remaining tests to AppenderV2 and remove LimitedAppenderV1",
+   "body": "Part of #17632\r\n\r\nMigrates all remaining `tsdb` tests and benchmarks to `AppenderV2`, removes V1 duplicate append tests from `tsdb/db_test.go` and `tsdb/head_test.go`, and deletes the `storage.LimitedAppenderV1` test migration adapter.\r\n\r\nCommits in this PR:\r\n1. `tsdb: migrate read, compaction, and benchmark tests to AppenderV2`\r\n2. `tsdb: migrate unique tests in db_test.go and head_test.go to AppenderV2 and remove V1 duplicates`\r\n3. `storage, tsdb: remove LimitedAppenderV1 and AppenderV2AsLimitedV1`\r\n\r\n```release-notes\r\nNONE\r\n```",
+   "url": "https://github.com/prometheus/prometheus/pull/20014",
+   "author": {
+    "login": "bwplotka",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "main",
+   "created_at": "2026-10-14T11:09:58Z",
+   "merged_at": "2026-10-27T20:12:20Z",
+   "merge_commit": "89e9a6fb8deaae4a24434e8309a67ba547fe9306",
+   "commits": [
+    {
+     "oid": "dc7fd800bc035e12edafac4c4a2bc07b9e59ebb8",
+     "authored_date": "2026-10-14T10:08:23Z"
+    },
+    {
+     "oid": "540d6524f2242c4bbe2dc459f422d676088db4fe",
+     "authored_date": "2026-10-14T10:41:00Z"
+    },
+    {
+     "oid": "0a4f6f6596fa416e26ebb4c1b71aa2f026e26a81",
+     "authored_date": "2026-10-14T10:45:39Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "storage/interface_append.go",
+     "additions": 0,
+     "deletions": 28
+    },
+    {
+     "path": "tsdb/block_test.go",
+     "additions": 9,
+     "deletions": 9
+    },
+    {
+     "path": "tsdb/blockwriter_test.go",
+     "additions": 0,
+     "deletions": 34
+    },
+    {
+     "path": "tsdb/compact_test.go",
+     "additions": 35,
+     "deletions": 35
+    },
+    {
+     "path": "tsdb/db_append_v2_test.go",
+     "additions": 18,
+     "deletions": 24
+    },
+    {
+     "path": "tsdb/db_test.go",
+     "additions": 1846,
+     "deletions": 9430
+    },
+    {
+     "path": "tsdb/docs/usage.md",
+     "additions": 2,
+     "deletions": 2
+    },
+    {
+     "path": "tsdb/example_test.go",
+     "additions": 5,
+     "deletions": 4
+    },
+    {
+     "path": "tsdb/head_append_v2_test.go",
+     "additions": 43,
+     "deletions": 16
+    },
+    {
+     "path": "tsdb/head_bench_test.go",
+     "additions": 6,
+     "deletions": 85
+    },
+    {
+     "path": "tsdb/head_read_test.go",
+     "additions": 11,
+     "deletions": 11
+    },
+    {
+     "path": "tsdb/head_test.go",
+     "additions": 839,
+     "deletions": 5488
+    },
+    {
+     "path": "tsdb/head_wal_replay_test.go",
+     "additions": 126,
+     "deletions": 133
+    },
+    {
+     "path": "tsdb/label_values_bench_test.go",
+     "additions": 4,
+     "deletions": 3
+    },
+    {
+     "path": "tsdb/ooo_head_read_test.go",
+     "additions": 11,
+     "deletions": 11
+    },
+    {
+     "path": "tsdb/querier_bench_test.go",
+     "additions": 13,
+     "deletions": 13
+    },
+    {
+     "path": "tsdb/querier_test.go",
+     "additions": 35,
+     "deletions": 35
+    },
+    {
+     "path": "tsdb/query_cost_test.go",
+     "additions": 8,
+     "deletions": 8
+    },
+    {
+     "path": "tsdb/testutil.go",
+     "additions": 15,
+     "deletions": 15
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 20206,
+   "title": "discovery/linode: fix transfer allowance conversion",
+   "body": "Linode reports transfer allowances in GiB, but discovery converts them using a MiB multiplier. This makes `__meta_linode_specs_transfer_bytes` 1,024 times too small.\r\n\r\nUse the GiB-to-bytes conversion and update all seven existing table-driven expectations. For example, `transfer: 4000` now produces `4294967296000` bytes instead of `4194304000`.\r\n\r\nThis matches [Akamai\u2019s documented transfer units](https://techdocs.akamai.com/cloud-computing/docs/understanding-how-billing-works#gb-vs-gib-conversion-of-bytes).\r\n\r\nValidation:\r\n- Confirmed the corrected expectations fail before the conversion fix.\r\n- Passed `go test -race ./discovery/linode -count=1`.\r\n- Passed `make lint GOLANGCI_LINT_OPTS=--timeout=10m`.\r\n\r\n```release-notes\r\n[BUGFIX] Linode SD: Fix `__meta_linode_specs_transfer_bytes` reporting values 1,024 times too small\r\n```",
+   "url": "https://github.com/prometheus/prometheus/pull/20206",
+   "author": {
+    "login": "FayezBast",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2026-10-27T13:28:18Z",
+   "merged_at": "2026-10-28T14:44:25Z",
+   "merge_commit": "516bc947a582c3775af800f38f65557b4bab7770",
+   "commits": [
+    {
+     "oid": "89698b0e78e7f5975adcbb370c6d0fad20af16c4",
+     "authored_date": "2026-10-27T13:24:47Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "discovery/linode/linode.go",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "discovery/linode/linode_test.go",
+     "additions": 7,
+     "deletions": 7
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 20223,
+   "title": "fix(storage/remote): fall back to WAL metadata when type-and-unit labels are empty",
+   "body": "When `--enable-feature=type-and-unit-labels` is enabled, `__type__` or `__unit__` may be absent on a series (or removed via `write_relabel_configs`) even when cached series metadata is present. Fall back to `d.metadata` for `Type` and `Unit` in `populateV2TimeSeries` when the corresponding label is empty.\n\nSplit out from https://github.com/prometheus/prometheus/pull/20098#discussion_r4406185329.\n\n### Commits\n- `storage/remote: fall back to WAL metadata when type-and-unit labels are empty`\n\n```release-notes\n[BUGFIX] Remote Write 2.0: Fall back to cached WAL metadata for metric type and unit when `--enable-feature=type-and-unit-labels` is enabled and `__type__` or `__unit__` labels are empty.\n```",
+   "url": "https://github.com/prometheus/prometheus/pull/20223",
+   "author": {
+    "login": "bwplotka",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "main",
+   "created_at": "2026-10-29T07:14:43Z",
+   "merged_at": "2026-10-29T13:37:34Z",
+   "merge_commit": "d690972472ad75a5024c6048bbaa068c43945a9b",
+   "commits": [
+    {
+     "oid": "703c497e11087253a6cfdf7964afdbe13aa9115e",
+     "authored_date": "2026-10-29T07:10:11Z"
+    },
+    {
+     "oid": "75f2ab0198ed6bd36bdc25b69e3874fea085b1a9",
+     "authored_date": "2026-10-29T12:57:40Z"
+    },
+    {
+     "oid": "ae498feeb60d682549cd79f94378a141dd39a668",
+     "authored_date": "2026-10-29T12:58:18Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "docs/feature_flags.md",
+     "additions": 1,
+     "deletions": 0
+    },
+    {
+     "path": "storage/remote/queue_manager.go",
+     "additions": 20,
+     "deletions": 19
+    },
+    {
+     "path": "storage/remote/queue_manager_test.go",
+     "additions": 39,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 16701,
+   "title": "promtool: Report TSDB disk usage by metric name",
+   "body": "This PR enhances the `--extended` flag of `promtool tsdb analyze` to provide a detailed breakdown of disk usage by metric name.\r\n\r\n## Motivation\r\n\r\nIn some environments, disk retention has triggered earlier than expected, resulting in the loss of more historical data than intended. Existing analyses from `promtool tsdb analyze` (such as series or label pair counts) are insufficient to diagnose high disk usage. Metric name cardinality can increase due to label churn without a corresponding rise in disk consumption, and series with constant or infrequent values are efficiently compacted. As a result, it is difficult to identify which metrics are responsible for high disk usage.\r\n\r\n## Implementation\r\n\r\nThis change iterates over all chunk files in a TSDB block, calculates the disk usage for each chunk according to the [TSDB chunk format documentation](https://github.com/prometheus/prometheus/blob/main/tsdb/docs/format/chunks.md), and aggregates usage by metric name. The 8-byte header of ea",
+   "url": "https://github.com/prometheus/prometheus/pull/16701",
+   "author": {
+    "login": "vicwicker",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2025-06-06T12:59:42Z",
+   "merged_at": "2026-11-05T14:46:27Z",
+   "merge_commit": "62aca1806f5b9a6d13b91951e5184894d61e1be4",
+   "commits": [
+    {
+     "oid": "b4fc61fec3e74b11f92d5835b54a818d565948aa",
+     "authored_date": "2025-08-22T12:02:49Z"
+    },
+    {
+     "oid": "af8143856d8c80464401a3366b4b723b8ee0b791",
+     "authored_date": "2025-08-22T08:11:21Z"
+    },
+    {
+     "oid": "ba192f5680c665c4de0afb38f7ef4230619992d4",
+     "authored_date": "2026-11-05T08:57:00Z"
+    },
+    {
+     "oid": "156b7391ae03dbe843d4388d6f20b66358b5694e",
+     "authored_date": "2026-11-05T09:01:08Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": "cmd/promtool/tsdb.go",
+     "additions": 58,
+     "deletions": 2
+    },
+    {
+     "path": "cmd/promtool/tsdb_test.go",
+     "additions": 45,
+     "deletions": 0
+    },
+    {
+     "path": "tsdb/chunks/chunks.go",
+     "additions": 11,
+     "deletions": 0
+    },
+    {
+     "path": "tsdb/chunks/chunks_test.go",
+     "additions": 46,
+     "deletions": 0
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 20346,
+   "title": "merge release-3.16 into main",
+   "body": "Signed-off-by: Owen Williams <owen.williams@grafana.com>\n```release-notes\nNONE\n```\n",
+   "url": "https://github.com/prometheus/prometheus/pull/20346",
+   "author": {
+    "login": "ywwg",
+    "type": "User"
+   },
+   "author_association": "MEMBER",
+   "base_ref": "main",
+   "created_at": "2026-11-05T16:26:13Z",
+   "merged_at": "2026-11-09T14:59:56Z",
+   "merge_commit": "cdca566ef0db53933b655b84e0f7589bc9608e54",
+   "commits": [
+    {
+     "oid": "612b53578aaa48465938060491635d40e601723f",
+     "authored_date": "2026-10-21T17:27:53Z"
+    },
+    {
+     "oid": "215715dade182c7cda621012a8f2281991f2289c",
+     "authored_date": "2026-10-26T15:38:30Z"
+    },
+    {
+     "oid": "c77123bf4edda0290fc75f57aebc3ca4b1a55089",
+     "authored_date": "2026-10-26T16:06:42Z"
+    },
+    {
+     "oid": "d79f05684dad8f39d87d66908e0d73a9731ebc4d",
+     "authored_date": "2026-10-26T16:10:32Z"
+    },
+    {
+     "oid": "6ca42718a0eaca5489b0239be19c4d7ba6679e59",
+     "authored_date": "2026-10-26T16:17:29Z"
+    },
+    {
+     "oid": "8c51ff91add6944db3b9492c7f760431ea3c5c82",
+     "authored_date": "2026-10-26T16:39:49Z"
+    },
+    {
+     "oid": "4d7eef87a1719ecb4370367c367abba1255696bd",
+     "authored_date": "2026-10-26T18:33:16Z"
+    },
+    {
+     "oid": "851b45053bb6644b97eef86a6a129afefacd041c",
+     "authored_date": "2026-10-27T15:08:16Z"
+    },
+    {
+     "oid": "5113a1b593b49e42b8ddcc9ea4f5cff40ce04e33",
+     "authored_date": "2026-10-27T17:55:26Z"
+    },
+    {
+     "oid": "d3478094e048481297e4ccb211e7c52327690042",
+     "authored_date": "2026-10-27T18:25:09Z"
+    },
+    {
+     "oid": "9dbd568c67e6c9e3bcaa71a793362400ee2ea0a8",
+     "authored_date": "2026-10-27T07:27:49Z"
+    },
+    {
+     "oid": "815458acb970011765caa9cc4d09c50faccd2b7b",
+     "authored_date": "2026-10-27T19:56:41Z"
+    },
+    {
+     "oid": "e5102713ab342720d4be1914ccb44bf1eb9b19a5",
+     "authored_date": "2026-10-28T14:02:09Z"
+    },
+    {
+     "oid": "3828b1216ccf22a78b1c0969e1b332ee062a3298",
+     "authored_date": "2026-10-29T12:06:43Z"
+    },
+    {
+     "oid": "cb1dc5c43d9106222342ff915eb380b4ace0cefa",
+     "authored_date": "2026-10-29T15:28:10Z"
+    },
+    {
+     "oid": "933b81f0bc4dcd8bb420bbcaf304b85accac323b",
+     "authored_date": "2026-11-02T14:26:54Z"
+    },
+    {
+     "oid": "92e4be02602df70d096b901a3b788b431c66df77",
+     "authored_date": "2026-11-02T19:23:55Z"
+    },
+    {
+     "oid": "4b9c0f07c3fd57083d9dd1caf338e4f094064e91",
+     "authored_date": "2026-11-03T11:01:30Z"
+    },
+    {
+     "oid": "e7d153cb5f08a439b808e75c8bd290d5aaf482fa",
+     "authored_date": "2026-11-03T16:30:30Z"
+    },
+    {
+     "oid": "12d8b92282ab9430f9b35400be4315a716832893",
+     "authored_date": "2026-11-03T17:28:55Z"
+    },
+    {
+     "oid": "607975f638acb9ff1f7aba3e5adf6aa87b992fb1",
+     "authored_date": "2026-11-04T18:38:40Z"
+    },
+    {
+     "oid": "e2e28adeee2c5883d000fc82aca6008cfbf7e96d",
+     "authored_date": "2026-11-05T15:06:51Z"
+    },
+    {
+     "oid": "f6beddd492fd04a7285c7ffd8b38aa818d8b5287",
+     "authored_date": "2026-11-05T16:21:27Z"
+    },
+    {
+     "oid": "55c0080de1fe45ef90442b1449ed371e73aa620e",
+     "authored_date": "2026-11-06T17:19:24Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": ".github/workflows/check_release_notes.yml",
+     "additions": 5,
+     "deletions": 0
+    },
+    {
+     "path": ".github/workflows/ci.yml",
+     "additions": 3,
+     "deletions": 1
+    },
+    {
+     "path": "CHANGELOG.md",
+     "additions": 87,
+     "deletions": 4
+    },
+    {
+     "path": "Makefile",
+     "additions": 13,
+     "deletions": 1
+    },
+    {
+     "path": "RELEASE.md",
+     "additions": 28,
+     "deletions": 10
+    },
+    {
+     "path": "VERSION",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "scripts/bump_changelog_version.sh",
+     "additions": 90,
+     "deletions": 0
+    },
+    {
+     "path": "scripts/bump_changelog_version_test.sh",
+     "additions": 195,
+     "deletions": 0
+    },
+    {
+     "path": "scripts/generate_release_notes.sh",
+     "additions": 3,
+     "deletions": 3
+    },
+    {
+     "path": "web/ui/mantine-ui/package.json",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "web/ui/module/codemirror-promql/package.json",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "web/ui/module/lezer-promql/package.json",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": "web/ui/package.json",
+     "additions": 1,
+     "deletions": 2
+    },
+    {
+     "path": "web/ui/react-app/package.json",
+     "additions": 1,
+     "deletions": 1
+    }
+   ],
+   "files_truncated": false
+  },
+  {
+   "number": 20413,
+   "title": "chore: fix pr-triage-board wording for reviews from non-maintainers",
+   "body": "Follow-up to https://github.com/prometheus/client_golang/issues/2190#issuecomment-6767925387.\n\nThe `Updated After Review` and `Waiting on Author` buckets react to reviews and comments from anyone other than the PR author (bots are excluded), but their descriptions say that a maintainer reviewed or left feedback. This changes only the wording, in `SKILL.md` and in the two section descriptions, so they match what the code checks; the classification is unchanged. Unit tests pass, and rendering the board from a small fixture before and after shows only the descriptions changing.\n\n@bwplotka\n\n#### Which issue(s) does the PR fix:\n\nNone.\n\n#### Release notes for end users (**ALL** commits must be considered).\n\n```release-notes\nNONE\n```\n",
+   "url": "https://github.com/prometheus/prometheus/pull/20413",
+   "author": {
+    "login": "ismailtrm",
+    "type": "User"
+   },
+   "author_association": "CONTRIBUTOR",
+   "base_ref": "main",
+   "created_at": "2026-11-10T20:41:47Z",
+   "merged_at": "2026-11-13T08:30:05Z",
+   "merge_commit": "f4838fa8dff8b5e53f2aad412b37d68f06279c95",
+   "commits": [
+    {
+     "oid": "738ccac9bc9ef2c2e4f79513d4850aee093ecbed",
+     "authored_date": "2026-11-10T12:49:24Z"
+    }
+   ],
+   "commits_truncated": false,
+   "files": [
+    {
+     "path": ".agents/skills/pr-triage-board/SKILL.md",
+     "additions": 1,
+     "deletions": 1
+    },
+    {
+     "path": ".agents/skills/pr-triage-board/scripts/generate_triage_board.py",
+     "additions": 2,
+     "deletions": 2
+    }
+   ],
+   "files_truncated": false
+  }
+ ]
+}

@@ -18,7 +18,7 @@ This project targets **Windows** (PowerShell in VS Code).
 | Metric definitions (METRICS.md v2) | Done |
 | Agent and skill files | Done |
 | `pull.py`: fetch PR data | Done, 23 automated tests |
-| `metrics.py`: compute metrics | Not started |
+| `metrics.py`: compute metrics | Done, 46 automated tests |
 | `report.py`: HTML and Excel reports | Not started |
 
 **Measured in v1:** time to merge, change failure rate proxy.
@@ -121,7 +121,7 @@ python -m venv .venv
 .venv\Scripts\python -m pytest
 ```
 
-Expected: `23 passed`. The tests use saved GitHub responses, so they need no token or network.
+Expected: `69 passed`. The tests use saved GitHub responses, so they need no token or network.
 
 ---
 
@@ -158,7 +158,9 @@ branches: []          # empty = the repo's default branch
 window_days: 28       # see METRICS.md rule 3.2
 clock: calendar       # or "business"
 ```
-Set branches to the branch your team's everyday PRs merge into. Usually that is main. If your team merges features into develop first, use branches: [develop].
+
+Set `branches` to the branch your team's everyday PRs merge into. Usually that is `main`. If your team merges features into `develop` first, use `branches: [develop]`.
+
 ---
 
 ## Use with Copilot
