@@ -17,16 +17,18 @@ Fetches PR data for a configured repo, computes the metrics defined in `referenc
 
 ## Run steps
 
-Run from the workspace root. If step 1 or 2 fails, stop and report the error. If step 3 fails, the numbers in `output/results.json` are still valid; report them and say the report files were not created.
+Run from the workspace root, exactly as written. Use the project's own Python in `.venv`: on Windows `.venv\Scripts\python`, on Mac or Linux `.venv/bin/python`. Do not search for `.venv` first; file search skips it. If the command fails because `.venv` is missing, stop and tell the user to follow the README setup.
 
-If a `.venv` folder exists, use its Python instead of `python` (Windows: `.venv\Scripts\python`; Mac or Linux: `.venv/bin/python`). Never activate the environment and never change system settings such as the PowerShell execution policy.
+If step 1 or 2 fails, stop and report the error. If step 3 fails, the numbers in `output/results.json` are still valid; report them and say the report files were not created.
 
 1. **Fetch** the current and previous windows, and reconcile counts against GitHub search:
-   `python .github/skills/pr-metrics/scripts/pull.py --config pr-metrics.config.yaml --out output/raw.json`
+   `.venv\Scripts\python .github/skills/pr-metrics/scripts/pull.py --config pr-metrics.config.yaml --out output/raw.json`
 2. **Compute** the metrics:
-   `python .github/skills/pr-metrics/scripts/metrics.py --config pr-metrics.config.yaml --in output/raw.json --out output/results.json`
+   `.venv\Scripts\python .github/skills/pr-metrics/scripts/metrics.py --config pr-metrics.config.yaml --in output/raw.json --out output/results.json`
 3. **Render** the reports:
-   `python .github/skills/pr-metrics/scripts/report.py --in output/results.json --out-dir output`
+   `.venv\Scripts\python .github/skills/pr-metrics/scripts/report.py --in output/results.json --out-dir output`
+
+On Mac or Linux, replace `.venv\Scripts\python` with `.venv/bin/python`.
 
 ## Outputs
 

@@ -19,8 +19,13 @@ from datetime import datetime, timedelta, time as dtime
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
-import pathspec
-import yaml
+try:
+    import pathspec
+    import yaml
+except ModuleNotFoundError as e:
+    sys.exit(f"ERROR: required package '{e.name}' is missing. Run this script with the project's Python "
+             f"(.venv\\Scripts\\python), or install the packages: "
+             f".venv\\Scripts\\python -m pip install -r requirements-dev.txt")
 
 VERSION = "1.0"
 

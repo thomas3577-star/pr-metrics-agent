@@ -17,8 +17,13 @@ import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-import requests
-import yaml
+try:
+    import requests
+    import yaml
+except ModuleNotFoundError as e:
+    sys.exit(f"ERROR: required package '{e.name}' is missing. Run this script with the project's Python "
+             f"(.venv\\Scripts\\python), or install the packages: "
+             f".venv\\Scripts\\python -m pip install -r requirements-dev.txt")
 
 VERSION = "1.0"
 API = "https://api.github.com/graphql"
