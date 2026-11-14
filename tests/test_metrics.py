@@ -189,6 +189,15 @@ def test_summary_display_values():
     assert metrics.summarise([1.0], 30)["p85_display"] == "hidden (fewer than 30 PRs)"
 
 
+def test_window_and_timestamp_display():
+    res = run([pr(1, "2026-10-20T00:00:00Z")])
+    w = res["meta"]["windows"]
+    assert w["current"]["display"] == "15 Oct 2026 to 29 Oct 2026 (UTC)"
+    assert w["previous"]["display"] == "1 Oct 2026 to 15 Oct 2026 (UTC)"
+    assert res["metrics"]["cfr_proxy"]["evaluation_window"]["display"] == "1 Oct 2026 to 15 Oct 2026 (UTC)"
+    assert res["meta"]["data_as_of_display"] == "29 Oct 2026, 00:00 UTC"
+
+
 def test_cfr_rate_display():
     c = cfr_for(pr(200, "2026-10-07T00:00:00Z", title="Revert x", body="Reverts o/r#100"))
     assert c["rate_display"] == "100.0% (1 of 1 PRs reverted)"

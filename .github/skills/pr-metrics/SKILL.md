@@ -41,7 +41,7 @@ If a `.venv` folder exists, use its Python instead of `python` (Windows: `.venv\
 
 - Numbers come only from `output/results.json`.
 - Check `data_quality` first: reconciliation status, segments flagged "too few PRs for p85", truncated PRs.
-- Quote durations using the `_display` fields (e.g. "2.7 days"). Never convert hours yourself.
+- Quote durations and dates using the ready-to-display fields (`_display`, `display`), e.g. "2.7 days", "15 Oct 2026 to 14 Nov 2026 (UTC)". Never convert hours or dates yourself.
 - If `reconciliation.status` is not `ok`, do not report any metric.
 - Report only metrics in METRICS.md's catalogue. Questions with status "Planned" are "not yet measured".
 

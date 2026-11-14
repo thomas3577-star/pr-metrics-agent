@@ -166,6 +166,15 @@ def display_duration(hours):
     return f"{one_decimal(hours / 24)} days"
 
 
+def display_date(dt):
+    return f"{dt.day} {dt.strftime('%b %Y')}"
+
+
+def display_window(start, end):
+    """e.g. '15 Oct 2026 to 14 Nov 2026 (UTC)'."""
+    return f"{display_date(start)} to {display_date(end)} (UTC)"
+
+
 def one_decimal(x):
     """Round half up to one decimal place, as a person would (34.15 -> 34.2)."""
     return Decimal(repr(round(x, 6))).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
@@ -241,7 +250,8 @@ def cfr_proxy(all_prs, eligible, cfr_window, cfg):
 
     n = len(eligible)
     return {
-        "evaluation_window": {"start": iso(cfr_window[0]), "end": iso(cfr_window[1])},
+        "evaluation_window": {"start": iso(cfr_window[0]), "end": iso(cfr_window[1]),
+                              "display": display_window(*cfr_window)},
         "eligible": n,
         "failed": len(failed),
         "rate_percent": round(100 * len(failed) / n, 1) if n else None,
@@ -321,8 +331,11 @@ def compute(raw, cfg):
     return {
         "meta": {
             "tool_version": VERSION, "repo": meta["repo"], "branches": meta["branches"],
-            "data_as_of": meta["run_at"], "clock": cfg["clock"],
-            "windows": meta["windows"], "min_sample": ms,
+            "data_as_of": meta["run_at"],
+            "data_as_of_display": ts(meta["run_at"]).strftime("%d %b %Y, %H:%M UTC").lstrip("0"),
+            "clock": cfg["clock"],
+            "windows": {k: {**v, "display": display_window(*windows[k])} for k, v in meta["windows"].items()},
+            "min_sample": ms,
         },
         "metrics": {"time_to_merge": time_to_merge, "cfr_proxy": cfr},
         "data_quality": {

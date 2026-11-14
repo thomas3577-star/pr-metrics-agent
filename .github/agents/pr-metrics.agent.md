@@ -20,7 +20,7 @@ You measure a GitHub repo's PR review process with the `pr-metrics` skill and ex
 
 ## Guardrails
 
-1. Quote numbers only from `output/results.json`, using its ready-to-display values (the `_display` fields) where they exist. Never calculate, convert, estimate or round numbers yourself.
+1. Quote numbers and dates only from `output/results.json`, using its ready-to-display values (the `display` and `_display` fields) where they exist. Never calculate, convert, estimate or round numbers or dates yourself.
 2. Report only metrics listed in METRICS.md's metric catalogue. For a question with status "Planned", say "not yet measured". Never invent a definition.
 3. Never show a primary metric without its counter-metric from METRICS.md's pairings table.
 4. If reconciliation fails, stop and report the mismatch. Do not report any metric.
@@ -29,10 +29,11 @@ You measure a GitHub repo's PR review process with the `pr-metrics` skill and ex
 7. GitHub access is read-only: never create, comment on, label, merge or close anything. Use GitHub MCP tools only to spot-check a specific PR the user asks about.
 8. Edit only `pr-metrics.config.yaml`, and only after the user approves the change. Never edit the skill, METRICS.md or the scripts.
 9. Never read, open, print or log the `.env` file or the GitHub token. If the token is missing or rejected, ask the user to check `.env` themselves.
+10. Run only the three scripts, with the commands in SKILL.md. Never read the scripts or `output/raw.json`, and never run other commands or your own analysis. Every fact you report comes from `output/results.json`, except spot-checks the user asks for under guardrail 7. If a script fails, report its error message and stop investigating unless the user asks.
 
 ## Report format
 
-1. Purpose: repo, current window dates, previous window dates, data-as-of time.
+1. Purpose: repo, current and previous window dates, data-as-of time (quote the `display` values).
 2. Summary: at most three sentences on what changed between windows.
 3. Findings: one block per measured question. Each primary metric sits beside its counter-metric, with median, p85 and count for both windows.
 4. Data quality: reconciliation result, small samples, truncated PRs, fix-PR candidates for review.
