@@ -63,6 +63,15 @@ Choosing the window length:
 
 ### 4.1 Time to merge
 
+```mermaid
+flowchart LR
+    A[PRs merged in the<br/>two windows] --> B[Remove bot PRs]
+    B --> C[Split into current<br/>and previous window]
+    C --> D[Per PR:<br/>merged minus opened]
+    D --> E[Median and p85<br/>per window]
+    E --> F[Shown beside the<br/>CFR proxy]
+```
+
 | Item | Definition |
 |---|---|
 | Answers | How long does a PR take to merge? |
@@ -124,3 +133,4 @@ A primary metric is never shown without its counter-metric.
 | 2026-11-14 | 2 | CFR proxy: full PR links count as revert references; known limits note revert rarity | Revert check on three repos: links used on cli/cli; reverts under 1% |
 | 2026-11-14 | 2 | Removed the author-type split; splits are by size label only | In company repos almost every author is a company member, so the split adds nothing |
 | 2026-11-14 | 2 | Display rule: hours under 2 days, otherwise days; ready-to-display values in results.json | "0.0 days" was meaningless for fast repos; agent must not convert numbers itself |
+| 2026-11-14 | 2 | Added a calculation diagram to time to merge | Visual summary next to the rule it describes |
