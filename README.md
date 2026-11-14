@@ -19,7 +19,7 @@ This project targets **Windows** (PowerShell in VS Code).
 | Agent and skill files | Done |
 | `pull.py`: fetch PR data | Done, 23 automated tests |
 | `metrics.py`: compute metrics | Done, 56 automated tests |
-| `report.py`: HTML and Excel reports | Done, 16 automated tests |
+| `report.py`: HTML and Excel reports | Done, 17 automated tests |
 
 **Measured in v1:** time to merge, change failure rate proxy.
 **Planned:** time per stage, skipped or rushed reviews, PR size, stale work (see BACKLOG.md).
@@ -123,7 +123,7 @@ After pulling updates, run the install command from setup step 3 again first. Ne
 .venv\Scripts\python -m pytest
 ```
 
-Expected: `95 passed`. The tests use saved GitHub responses, so they need no token or network.
+Expected: `96 passed`. The tests use saved GitHub responses, so they need no token or network.
 
 ---
 

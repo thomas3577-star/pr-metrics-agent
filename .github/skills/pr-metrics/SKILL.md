@@ -36,8 +36,8 @@ On Mac or Linux, replace `.venv\Scripts\python` with `.venv/bin/python`.
 |---|---|
 | `output/raw.json` | Fetched PR data, run metadata and the reconciliation result |
 | `output/results.json` | Every metric per window and split, the PR rows behind each number, and data-quality flags |
-| `output/report.html` | Human-readable report, primary and counter-metrics side by side |
-| `output/report.xlsx` | One sheet per metric plus PR-level rows |
+| `output/report-<owner>-<repo>-<date>-<time>UTC.html` | Human-readable report, primary and counter-metrics side by side. Named from the data-as-of time, e.g. `report-grafana-k6-2026-11-14-1220UTC.html` |
+| `output/report-<owner>-<repo>-<date>-<time>UTC.xlsx` | Same name as the HTML report. One sheet per metric plus PR-level rows |
 
 ## Interpreting results
 

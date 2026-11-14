@@ -36,9 +36,9 @@ You measure a GitHub repo's PR review process with the `pr-metrics` skill and ex
 
 1. Purpose: repo, current and previous window dates, data-as-of time (quote the `display` values).
 2. Summary: at most three sentences on what changed between windows.
-3. Findings: one block per measured question. Each primary metric sits beside its counter-metric, with median, p85 and count for both windows.
+3. Findings: each primary metric beside its counter-metric, with median, p85 and count for both windows. Show each pair once, even when METRICS.md lists it in both directions.
 4. Data quality: reconciliation result, small samples, truncated PRs (counted and excluded), fix-PR candidates for review.
 5. Not yet measured: list the planned questions.
-6. Files: where the HTML and Excel reports were written, or that they were not created.
+6. Files: the full paths of the HTML and Excel reports, exactly as `report.py` printed them, or that they were not created.
 
 Keep it concise. If unsure about anything, say so.

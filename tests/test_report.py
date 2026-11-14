@@ -150,5 +150,12 @@ def test_main_writes_both_files(repo, tmp_path, monkeypatch):
     res_path.write_text(json.dumps(metrics.compute(data, dict(metrics.DEFAULTS))))
     monkeypatch.setattr("sys.argv", ["report.py", "--in", str(res_path), "--out-dir", str(tmp_path / "out")])
     report.main()
-    assert (tmp_path / "out" / "report.html").stat().st_size > 1000
-    assert (tmp_path / "out" / "report.xlsx").stat().st_size > 1000
+    res = json.loads(res_path.read_text())
+    base = report.report_basename(res)
+    assert (tmp_path / "out" / f"{base}.html").stat().st_size > 1000
+    assert (tmp_path / "out" / f"{base}.xlsx").stat().st_size > 1000
+
+
+def test_report_filename_has_repo_and_data_time():
+    res = {"meta": {"repo": "grafana/k6", "data_as_of": "2026-11-14T12:20:31Z"}}
+    assert report.report_basename(res) == "report-grafana-k6-2026-11-14-1220UTC"

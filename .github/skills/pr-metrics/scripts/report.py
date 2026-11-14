@@ -1,7 +1,8 @@
 """Render the pr-metrics reports for people.
 
 Reads results.json (from metrics.py) and the pairings table in references/METRICS.md,
-and writes report.html (self-contained, works offline) and report.xlsx.
+and writes an HTML report (self-contained, works offline) and an Excel workbook, named
+with the repo and the data-as-of time, e.g. report-grafana-k6-2026-11-14-1220UTC.html.
 No calculations: every number shown comes from results.json as a display value.
 Author names are never shown, to prevent per-person rankings.
 
@@ -282,6 +283,13 @@ def render_xlsx(res, pairs, path):
     wb.save(path)
 
 
+def report_basename(res):
+    """report-<owner>-<repo>-<YYYY-MM-DD>-<HHMM>UTC, from the data-as-of time (Windows-safe, sorts by date)."""
+    repo = re.sub(r"[^A-Za-z0-9._-]+", "-", res["meta"]["repo"].replace("/", "-"))
+    stamp = res["meta"]["data_as_of"]  # e.g. 2026-11-14T12:20:31Z
+    return f"report-{repo}-{stamp[:10]}-{stamp[11:13]}{stamp[14:16]}UTC"
+
+
 def main():
     ap = argparse.ArgumentParser(description="Render pr-metrics reports.")
     ap.add_argument("--in", dest="inp", required=True)
@@ -298,10 +306,12 @@ def main():
 
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
-    (out / "report.html").write_text(render_html(res, pairs, version), encoding="utf-8")
-    render_xlsx(res, pairs, out / "report.xlsx")
-    print(f"Wrote {out / 'report.html'}")
-    print(f"Wrote {out / 'report.xlsx'}")
+    base = report_basename(res)
+    html_path, xlsx_path = out / f"{base}.html", out / f"{base}.xlsx"
+    html_path.write_text(render_html(res, pairs, version), encoding="utf-8")
+    render_xlsx(res, pairs, xlsx_path)
+    print(f"Wrote {html_path}")
+    print(f"Wrote {xlsx_path}")
 
 
 if __name__ == "__main__":
