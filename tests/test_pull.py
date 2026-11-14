@@ -38,6 +38,7 @@ def run(tmp_path, monkeypatch):
     """Run pull.main() with fake GitHub responses. Returns (exit_code, raw_or_None, output)."""
 
     def _run(responses, config="repo: prometheus/prometheus\n", token=TOKEN, capsys=None):
+        monkeypatch.chdir(tmp_path)  # no stray .env from the project folder
         cfg = tmp_path / "config.yaml"
         cfg.write_text(config)
         out = tmp_path / "raw.json"
@@ -168,3 +169,32 @@ def test_slow_down_twice_exits_4_with_reset_time(run, capsys):
     code, _ = run([FakeResponse(body=fixture("repo.json")), slow, slow])
     assert code == 4
     assert "Resets at" in capsys.readouterr().err
+
+
+# 8. Token from .env
+def test_read_token_prefers_environment(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / ".env").write_text("GITHUB_TOKEN=from-file\n")
+    monkeypatch.setenv("GITHUB_TOKEN", "from-env")
+    assert pull.read_token() == "from-env"
+
+
+@pytest.mark.parametrize("content", ['GITHUB_TOKEN=abc\n', 'GITHUB_TOKEN="abc"\n',
+                                     "# comment\nOTHER=1\nexport GITHUB_TOKEN='abc'\n"])
+def test_read_token_from_env_file(tmp_path, monkeypatch, content):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    (tmp_path / ".env").write_text(content)
+    assert pull.read_token() == "abc"
+
+
+def test_read_token_missing_or_empty(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    assert pull.read_token() is None
+    (tmp_path / ".env").write_text("GITHUB_TOKEN=\n")
+    assert pull.read_token() is None
+
+
+def test_gitignore_excludes_env():
+    assert ".env" in (ROOT / ".gitignore").read_text().splitlines()
